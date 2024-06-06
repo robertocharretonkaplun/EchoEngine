@@ -44,6 +44,9 @@
     <ClInclude Include="include\Texture.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="include\DepthStencilView.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EchoEngine.cpp" />
@@ -63,6 +66,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="source\Texture.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DepthStencilView.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
