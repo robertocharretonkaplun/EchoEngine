@@ -14,7 +14,7 @@
 #include "DepthStencilView.h"
 #include "RenderTargetView.h"
 #include "Viewport.h"
-#include "InputLayout.h"
+#include "ShaderProgram.h"
 //--------------------------------------------------------------------------------------
 // Global Variables
 //--------------------------------------------------------------------------------------
@@ -28,19 +28,18 @@ Texture															g_depthStencil;
 DepthStencilView										g_depthStencilView;
 RenderTargetView										g_renderTargetView;
 Viewport														g_viewport;
-InputLayout													g_inputLayout;
+ShaderProgram												g_shaderProgram;
 
-//ID3D11RenderTargetView* g_pRenderTargetView = NULL;
-ID3D11VertexShader* g_pVertexShader = NULL;
-ID3D11PixelShader* g_pPixelShader = NULL;
-//ID3D11InputLayout* g_pVertexLayout = NULL;
 ID3D11Buffer* g_pVertexBuffer = NULL;
 ID3D11Buffer* g_pIndexBuffer = NULL;
 ID3D11Buffer* g_pCBNeverChanges = NULL;
 ID3D11Buffer* g_pCBChangeOnResize = NULL;
 ID3D11Buffer* g_pCBChangesEveryFrame = NULL;
+
 ID3D11ShaderResourceView* g_pTextureRV = NULL;
+
 ID3D11SamplerState* g_pSamplerLinear = NULL;
+
 XMMATRIX                            g_World;
 XMMATRIX                            g_View;
 XMMATRIX                            g_Projection;
@@ -97,38 +96,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 
 //--------------------------------------------------------------------------------------
-// Helper for compiling shaders with D3DX11
-//--------------------------------------------------------------------------------------
-HRESULT CompileShaderFromFile(char* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut)
-{
-	HRESULT hr = S_OK;
-
-	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
-#if defined( DEBUG ) || defined( _DEBUG )
-	// Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-	// Setting this flag improves the shader debugging experience, but still allows 
-	// the shaders to be optimized and to run exactly the way they will run in 
-	// the release configuration of this program.
-	dwShaderFlags |= D3DCOMPILE_DEBUG;
-#endif
-
-	ID3DBlob* pErrorBlob;
-	hr = D3DX11CompileFromFile(szFileName, NULL, NULL, szEntryPoint, szShaderModel,
-		dwShaderFlags, 0, NULL, ppBlobOut, &pErrorBlob, NULL);
-	if (FAILED(hr))
-	{
-		if (pErrorBlob != NULL)
-			OutputDebugStringA((char*)pErrorBlob->GetBufferPointer());
-		if (pErrorBlob) pErrorBlob->Release();
-		return hr;
-	}
-	if (pErrorBlob) pErrorBlob->Release();
-
-	return S_OK;
-}
-
-
-//--------------------------------------------------------------------------------------
 // Create Direct3D device and swap chain
 //--------------------------------------------------------------------------------------
 HRESULT InitDevice()
@@ -139,7 +106,9 @@ HRESULT InitDevice()
 	g_swapchain.init(g_device, g_deviceContext, g_backBuffer, g_window);
 
 	// Create render target view
-	g_renderTargetView.init(g_device, g_backBuffer, DXGI_FORMAT_R8G8B8A8_UNORM);
+	g_renderTargetView.init(g_device, 
+													g_backBuffer, 
+													DXGI_FORMAT_R8G8B8A8_UNORM);
 
 	// Create depth stencil texture
 	g_depthStencil.init(g_device, 
@@ -156,28 +125,6 @@ HRESULT InitDevice()
 	
 	// Setup the viewport
 	g_viewport.init(g_window);
-
-	// Compile the vertex shader
-	ID3DBlob* pVSBlob = NULL;
-	hr = CompileShaderFromFile("EchoEngine.fx", "VS", "vs_4_0", &pVSBlob);
-	if (FAILED(hr))
-	{
-		MessageBox(NULL,
-			"The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", "Error", MB_OK);
-		return hr;
-	}
-
-	// Create the vertex shader
-	//hr = g_device.m_device->CreateVertexShader(pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), NULL, &g_pVertexShader);
-	hr = g_device.CreateVertexShader(pVSBlob->GetBufferPointer(), 
-																	 pVSBlob->GetBufferSize(), 
-																	 nullptr, 
-																	 &g_pVertexShader);
-	if (FAILED(hr))
-	{
-		pVSBlob->Release();
-		return hr;
-	}
 
 	// Define the input layout
 	std::vector<D3D11_INPUT_ELEMENT_DESC> Layout;
@@ -202,29 +149,7 @@ HRESULT InitDevice()
 	texcoord.InstanceDataStepRate = 0;
 	Layout.push_back(texcoord);
 
-	g_inputLayout.init(g_device, Layout, pVSBlob);
-	
-	pVSBlob->Release();
-
-	// Compile the pixel shader
-	ID3DBlob* pPSBlob = NULL;
-	hr = CompileShaderFromFile("EchoEngine.fx", "PS", "ps_4_0", &pPSBlob);
-	if (FAILED(hr))
-	{
-		MessageBox(NULL,
-			"The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file.", "Error", MB_OK);
-		return hr;
-	}
-
-	// Create the pixel shader
-	//hr = g_device.m_device->CreatePixelShader(pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), NULL, &g_pPixelShader);
-	hr = g_device.CreatePixelShader(pPSBlob->GetBufferPointer(), 
-																	pPSBlob->GetBufferSize(), 
-																	nullptr, &g_pPixelShader);
-	
-	pPSBlob->Release();
-	if (FAILED(hr))
-		return hr;
+	g_shaderProgram.init(g_device, "EchoEngine.fx", Layout);
 
 	// Create vertex buffer
 	SimpleVertex vertices[] =
@@ -398,22 +323,14 @@ void CleanupDevice()
 	if (g_pCBChangesEveryFrame) g_pCBChangesEveryFrame->Release();
 	if (g_pVertexBuffer) g_pVertexBuffer->Release();
 	if (g_pIndexBuffer) g_pIndexBuffer->Release();
-	//if (g_pVertexLayout) g_pVertexLayout->Release();
-	g_inputLayout.destroy();
-	if (g_pVertexShader) g_pVertexShader->Release();
-	if (g_pPixelShader) g_pPixelShader->Release();
-	//if (g_pDepthStencil) g_pDepthStencil->Release();
+
+	g_shaderProgram.destroy();
 	g_depthStencil.destroy();
-	//if (g_pDepthStencilView) g_pDepthStencilView->Release();
 	g_depthStencilView.destroy();
 	g_renderTargetView.destroy();
-	//if (g_pRenderTargetView) g_pRenderTargetView->Release();
-	//if (g_pSwapChain) g_pSwapChain->Release();
-	//if (g_deviceContext.m_deviceContext) g_deviceContext.m_deviceContext->Release();
 	g_swapchain.destroy();
 	g_deviceContext.destroy();
 	g_device.destroy();
-	//if (g_device.m_device) g_device.m_device->Release();
 }
 
 
@@ -496,12 +413,14 @@ void Render()
 	//
 	// Render the cube
 	//
-	g_inputLayout.render(g_deviceContext);
-	g_deviceContext.m_deviceContext->VSSetShader(g_pVertexShader, NULL, 0);
+	
+	//g_inputLayout.render(g_deviceContext);
+	//g_deviceContext.m_deviceContext->VSSetShader(g_pVertexShader, NULL, 0);
+	//g_deviceContext.m_deviceContext->PSSetShader(g_pPixelShader, NULL, 0);
+	g_shaderProgram.render(g_deviceContext);
 	g_deviceContext.m_deviceContext->VSSetConstantBuffers(0, 1, &g_pCBNeverChanges);
 	g_deviceContext.m_deviceContext->VSSetConstantBuffers(1, 1, &g_pCBChangeOnResize);
 	g_deviceContext.m_deviceContext->VSSetConstantBuffers(2, 1, &g_pCBChangesEveryFrame);
-	g_deviceContext.m_deviceContext->PSSetShader(g_pPixelShader, NULL, 0);
 	g_deviceContext.m_deviceContext->PSSetConstantBuffers(2, 1, &g_pCBChangesEveryFrame);
 	g_deviceContext.m_deviceContext->PSSetShaderResources(0, 1, &g_pTextureRV);
 	g_deviceContext.m_deviceContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
@@ -510,6 +429,6 @@ void Render()
 	//
 	// Present our back buffer to our front buffer
 	//
-	//g_pSwapChain->Present(0, 0);
+
 	g_swapchain.present();
 }
