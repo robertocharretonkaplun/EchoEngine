@@ -66,3 +66,38 @@ DeviceContext::PSSetShader(ID3D11PixelShader* pPixelShader,
 		m_deviceContext->PSSetShader(pPixelShader, ppClassInstances, NumClassInstances);
 	}
 }
+
+void 
+DeviceContext::UpdateSubresource(ID3D11Resource* pDstResource, 
+															   unsigned int DstSubresource, 
+															   const D3D11_BOX* pDstBox, 
+															   const void* pSrcData, 
+															   unsigned int SrcRowPitch, 
+															   unsigned int SrcDepthPitch) {
+	m_deviceContext->UpdateSubresource(pDstResource,
+																		 DstSubresource, 
+																		 pDstBox, 
+																		 pSrcData, 
+																		 SrcRowPitch, 
+																		 SrcDepthPitch);
+}
+
+void 
+DeviceContext::IASetVertexBuffers(unsigned int StartSlot, 
+																	unsigned int NumBuffers, 
+																	ID3D11Buffer* const* ppVertexBuffers, 
+																	const unsigned int* pStrides, 
+																	const unsigned int* pOffsets) {
+	m_deviceContext->IASetVertexBuffers(StartSlot, 
+																			NumBuffers, 
+																			ppVertexBuffers, 
+																			pStrides, 
+																			pOffsets);
+}
+
+void 
+DeviceContext::IASetIndexBuffer(ID3D11Buffer* pIndexBuffer, 
+																DXGI_FORMAT Format, 
+																unsigned int Offset) {
+	m_deviceContext->IASetIndexBuffer(pIndexBuffer, Format, Offset);
+}

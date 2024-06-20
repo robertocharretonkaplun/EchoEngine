@@ -40,10 +40,11 @@ OutputDebugStringA("\n");
    OutputDebugStringW( os_.str().c_str() );  \
 }
 
-#define ERROR( classObj, method, errorMSG )   \
+#define ERROR( classObj, method, errorMSG )  \
 {                                            \
    std::wostringstream os_;                  \
    os_ << "ERROR : " << classObj << "::" << method << " : " << "  Error in data from params [" << errorMSG << "] \n"; \
+   exit(1);                                  \
    OutputDebugStringW( os_.str().c_str() );  \
 }
 
@@ -73,4 +74,12 @@ CBChangesEveryFrame {
 enum ShaderType {
   PIXEL_SHADER = 0,
   VERTEX_SHADER = 1
+};
+
+struct Mesh {
+  std::string name;
+  std::vector <SimpleVertex> vertex;
+  std::vector <unsigned int> index;
+  int numVertex;
+  int numIndex;
 };
