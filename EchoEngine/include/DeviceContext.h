@@ -58,6 +58,11 @@ public:
   IASetIndexBuffer(ID3D11Buffer *pIndexBuffer,
                    DXGI_FORMAT Format,
                    unsigned int Offset);
+
+	void
+  PSSetSamplers(unsigned int StartSlot,
+                unsigned int NumSamplers,
+                ID3D11SamplerState* const* ppSamplers);
 private:
 
 public:
