@@ -33,8 +33,10 @@ DepthStencilView										g_depthStencilView;
 RenderTargetView										g_renderTargetView;
 Viewport														g_viewport;
 ShaderProgram												g_shaderProgram;
-Buffer                              g_vertexBuffer;
-Buffer                              g_indexBuffer;
+//Buffer                              g_vertexBuffer;
+std::vector<Buffer>                 g_vertexBuffers;
+//Buffer                              g_indexBuffer;
+std::vector<Buffer>                 g_indexBuffers;
 Buffer															g_CBBufferNeverChanges;
 Buffer															g_CBBufferChangeOnResize;
 Buffer															g_CBBufferChangesEveryFrame;
@@ -49,6 +51,9 @@ XMMATRIX                            g_Projection;
 XMFLOAT4                            g_vMeshColor(0.7f, 0.7f, 0.7f, 1.0f);
 
 Mesh																g_mesh;
+
+std::vector<Texture> modelTextures;
+
 CBNeverChanges cbNeverChanges;
 CBChangeOnResize cbChangesOnResize;
 CBChangesEveryFrame cb;
@@ -177,21 +182,38 @@ HRESULT InitDevice()
 	// Load Model
 	g_model.LoadModel("Models/makeshift.fbx");
 
-	// Create vertex buffer
-	g_mesh.name = "MakeShift";
-	g_mesh.vertex = g_model.GetVertices();
-	
-	g_mesh.numVertex = static_cast<unsigned int>(g_mesh.vertex.size());
+	for (auto& mesh : g_model.meshes) {
+		// Crear vertex buffer
+		Buffer vertexBuffer;
+		vertexBuffer.init(g_device, mesh, D3D11_BIND_VERTEX_BUFFER);
+		g_vertexBuffers.push_back(vertexBuffer);
+
+		// Crear index buffer
+		Buffer indexBuffer;
+		indexBuffer.init(g_device, mesh, D3D11_BIND_INDEX_BUFFER);
+		g_indexBuffers.push_back(indexBuffer);
+
+		// Cargar la textura asociada con esta malla
+		//Texture texture;
+		//std::string texturePath = "Textures/" + mesh.name + ".dds";
+		//texture.init(g_device, texturePath.c_str());
+		//g_textures.push_back(texture);
+	}
 
 	// Create vertex buffer
-	g_vertexBuffer.init(g_device, g_mesh, D3D11_BIND_VERTEX_BUFFER);
+	//g_mesh.name = "MakeShift";
+	//g_mesh.vertex = g_model.GetVertices();
+	//g_mesh.numVertex = static_cast<unsigned int>(g_mesh.vertex.size());
+
+	// Create vertex buffer
+	//g_vertexBuffer.init(g_device, g_mesh, D3D11_BIND_VERTEX_BUFFER);
 
 	// Create index buffer
-	g_mesh.index = g_model.GetIndices();
+	//g_mesh.index = g_model.GetIndices();
 	
-	g_mesh.numIndex = static_cast<unsigned int>(g_mesh.index.size());
+	//g_mesh.numIndex = static_cast<unsigned int>(g_mesh.index.size());
 
-	g_indexBuffer.init(g_device, g_mesh, D3D11_BIND_INDEX_BUFFER);
+	//g_indexBuffer.init(g_device, g_mesh, D3D11_BIND_INDEX_BUFFER);
 
 	// Inicialización de Constant Buffers
 	g_CBBufferNeverChanges.init(g_device, sizeof(CBNeverChanges));
@@ -200,8 +222,38 @@ HRESULT InitDevice()
 
 	g_CBBufferChangesEveryFrame.init(g_device, sizeof(CBChangesEveryFrame));
 
+	// Load the Textures from the model
+	//std::vector<std::string> textureFileNames = g_model.GetTextureFileNames();
+	
+	//for (const auto& textureFileName : textureFileNames) {
+	//	Texture texture;
+	//	if (!textureFileName.empty()) {
+	//		texture.init(g_device, textureFileName.c_str());
+	//	}
+	//	else {
+	//		// Load a default texture or handle error
+	//		texture.init(g_device, "seafloor.dds");
+	//	}
+	//	modelTextures.push_back(texture);
+	//}
+	Texture Head_Diffuse;
+	Head_Diffuse.init(g_device, "Textures/Head_Diffuse.dds");
+	
+	Texture Torso_Diffuse;
+	Torso_Diffuse.init(g_device, "Textures/Torso_Diffuse.dds");
+	
+	Texture Legs_Diffuse;
+	Legs_Diffuse.init(g_device, "Textures/Legs_Diffuse.dds");
+	
+	Texture Tanks_Diffuse;
+	Tanks_Diffuse.init(g_device, "Textures/Tanks_Diffuse.dds");
+
+	modelTextures.push_back(Head_Diffuse);
+	modelTextures.push_back(Legs_Diffuse);
+	modelTextures.push_back(Torso_Diffuse);
+	modelTextures.push_back(Tanks_Diffuse);
 	// Load the Texture
-	g_modelTexture.init(g_device, "seafloor.dds");
+	//g_modelTexture.init(g_device, "seafloor.dds");
 
 	// Create the sample state
 	g_sampler.init(g_device);
@@ -239,8 +291,16 @@ void CleanupDevice()
 	g_CBBufferNeverChanges.destroy();
 	g_CBBufferChangeOnResize.destroy();
 	g_CBBufferChangesEveryFrame.destroy();
-	g_vertexBuffer.destroy();
-	g_indexBuffer.destroy();
+	//g_vertexBuffer.destroy();
+	//g_indexBuffer.destroy();
+
+	for (auto& vertexBuffer : g_vertexBuffers) {
+		vertexBuffer.destroy();
+	}
+	
+	for (auto& indexBuffer : g_indexBuffers) {
+		indexBuffer.destroy();
+	}
 	g_shaderProgram.destroy();
 	g_depthStencil.destroy();
 	g_depthStencilView.destroy();
@@ -280,7 +340,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 // Update everyFrame
 void Update(float DeltaTime) {
 	// Rotate cube around the origin
-	g_World = XMMatrixRotationX(DeltaTime) * XMMatrixRotationY(DeltaTime);
+	XMVECTOR translation = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f); // Traslación en x=1, y=2, z=3
+	XMVECTOR rotation = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(260), XMConvertToRadians(DeltaTime * 50), 0.0f); // Rotación en X=180, Y=180, Z=0
+	XMVECTOR scale = XMVectorSet(2.0f, 2.0f, 2.0f, 0.0f); // Escala por 2 en x, y, z
+
+	// Combinar las transformaciones en una matriz de mundo
+	g_World = XMMatrixScalingFromVector(scale) * XMMatrixRotationQuaternion(rotation) * XMMatrixTranslationFromVector(translation);
+	//g_World = XMMatrixRotationX(180) * XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixRotationZ(0);
 
 	// Modify the color
 	//g_vMeshColor.x = (sinf(DeltaTime * 1.0f) + 1.0f) * 0.5f;
@@ -319,21 +385,36 @@ void Render()
 
 	// Render the cube
 	g_shaderProgram.render(g_deviceContext);
-	g_vertexBuffer.render(g_deviceContext, 0, 1);
-	g_indexBuffer.render(g_deviceContext, DXGI_FORMAT_R32_UINT);
+	//g_vertexBuffer.render(g_deviceContext, 0, 1);
+	//g_indexBuffer.render(g_deviceContext, DXGI_FORMAT_R32_UINT);
 
-	g_CBBufferNeverChanges.render(g_deviceContext, 0, 1); // Slot 0
-	g_CBBufferChangeOnResize.render(g_deviceContext, 1, 1); // Slot 1
-	g_CBBufferChangesEveryFrame.renderModel(g_deviceContext, 2, 1); // Slot 2
+	for (size_t i = 0; i < g_model.meshes.size(); i++) {
+		g_vertexBuffers[i].render(g_deviceContext, 0, 1);
+		g_indexBuffers[i].render(g_deviceContext, DXGI_FORMAT_R32_UINT);
+		modelTextures[i].render(g_deviceContext, 0, 1);
+		g_sampler.render(g_deviceContext, 0, 1);
 
-	g_modelTexture.render(g_deviceContext, 0, 1);
-	g_sampler.render(g_deviceContext, 0, 1);
+		// Actualizar constant buffers
+		g_CBBufferNeverChanges.render(g_deviceContext, 0, 1);
+		g_CBBufferChangeOnResize.render(g_deviceContext, 1, 1);
+		g_CBBufferChangesEveryFrame.renderModel(g_deviceContext, 2, 1);
 
+		g_deviceContext.m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		g_deviceContext.m_deviceContext->DrawIndexed(g_model.meshes[i].numIndex, 0, 0);
+	}
+
+	//g_CBBufferNeverChanges.render(g_deviceContext, 0, 1); // Slot 0
+	//g_CBBufferChangeOnResize.render(g_deviceContext, 1, 1); // Slot 1
+	//g_CBBufferChangesEveryFrame.renderModel(g_deviceContext, 2, 1); // Slot 2
+	//g_modelTexture.render(g_deviceContext, 0, 1);
+	//for (size_t i = 0; i < modelTextures.size(); ++i) {
+	//	modelTextures[i].render(g_deviceContext, static_cast<unsigned int>(i), 1);
+	//}
+	//g_sampler.render(g_deviceContext, 0, 1);
 	// Set primitive topology
-	g_deviceContext.m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	g_deviceContext.m_deviceContext->DrawIndexed(g_mesh.numIndex, 0, 0);
-
+	//g_deviceContext.m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//
+	//g_deviceContext.m_deviceContext->DrawIndexed(g_mesh.numIndex, 0, 0);
 	//
 	// Present our back buffer to our front buffer
 	//
