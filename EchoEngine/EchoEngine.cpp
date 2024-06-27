@@ -17,6 +17,8 @@
 #include "ShaderProgram.h"
 #include "Buffer.h"
 #include "SamplerState.h"
+#include "ModelLoader.h"
+//#include "fbxsdk.h"
 //--------------------------------------------------------------------------------------
 // Global Variables
 //--------------------------------------------------------------------------------------
@@ -38,6 +40,8 @@ Buffer															g_CBBufferChangeOnResize;
 Buffer															g_CBBufferChangesEveryFrame;
 Texture															g_modelTexture;
 SamplerState												g_sampler;
+ModelLoader													g_model;
+
 
 XMMATRIX                            g_World;
 XMMATRIX                            g_View;
@@ -170,82 +174,21 @@ HRESULT InitDevice()
 
 	g_shaderProgram.init(g_device, "EchoEngine.fx", Layout);
 
+	// Load Model
+	g_model.LoadModel("Models/makeshift.fbx");
+
 	// Create vertex buffer
-	SimpleVertex vertices[] =
-	{
-			{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT2(0.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
-			{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
-
-			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT2(0.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
-			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
-
-			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f) },
-			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
-			{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT2(1.0f, 1.0f) },
-			{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
-
-			{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT2(1.0f, 1.0f) },
-			{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
-
-			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT2(0.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT2(1.0f, 1.0f) },
-			{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT2(0.0f, 1.0f) },
-
-			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
-			{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
-	};
-
-	g_mesh.name = "Cube";
+	g_mesh.name = "MakeShift";
+	g_mesh.vertex = g_model.GetVertices();
 	
-	for (const SimpleVertex& vertex : vertices) {
-		g_mesh.vertex.push_back(vertex);
-	}
-
-	/*NOTA: El static_cast<unsigned int> se está utilizando aquí para convertir 
-	el resultado del método size() de un std::vector a un tipo unsigned int. 
-	El método size() devuelve un valor del tipo std::size_t, que es un tipo 
-	específico de tamaño no negativo. En algunas plataformas, std::size_t puede 
-	ser de un tamaño diferente a unsigned int.*/
 	g_mesh.numVertex = static_cast<unsigned int>(g_mesh.vertex.size());
 
 	// Create vertex buffer
 	g_vertexBuffer.init(g_device, g_mesh, D3D11_BIND_VERTEX_BUFFER);
 
-
 	// Create index buffer
-	unsigned int indices[] =
-	{
-			3,1,0,
-			2,1,3,
-
-			6,4,5,
-			7,4,6,
-
-			11,9,8,
-			10,9,11,
-
-			14,12,13,
-			15,12,14,
-
-			19,17,16,
-			18,17,19,
-
-			22,20,21,
-			23,20,22
-	};
-
-	for (unsigned int index : indices) {
-		g_mesh.index.push_back(index);
-	}
+	g_mesh.index = g_model.GetIndices();
+	
 	g_mesh.numIndex = static_cast<unsigned int>(g_mesh.index.size());
 
 	g_indexBuffer.init(g_device, g_mesh, D3D11_BIND_INDEX_BUFFER);
@@ -337,16 +280,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 // Update everyFrame
 void Update(float DeltaTime) {
 	// Rotate cube around the origin
-	g_World = XMMatrixRotationY(DeltaTime);
+	g_World = XMMatrixRotationX(DeltaTime) * XMMatrixRotationY(DeltaTime);
 
 	// Modify the color
-	g_vMeshColor.x = (sinf(DeltaTime * 1.0f) + 1.0f) * 0.5f;
-	g_vMeshColor.y = (cosf(DeltaTime * 3.0f) + 1.0f) * 0.5f;
-	g_vMeshColor.z = (sinf(DeltaTime * 5.0f) + 1.0f) * 0.5f;
+	//g_vMeshColor.x = (sinf(DeltaTime * 1.0f) + 1.0f) * 0.5f;
+	//g_vMeshColor.y = (cosf(DeltaTime * 3.0f) + 1.0f) * 0.5f;
+	//g_vMeshColor.z = (sinf(DeltaTime * 5.0f) + 1.0f) * 0.5f;
 
 	// Update constant Buffers
 	g_CBBufferNeverChanges.update(g_deviceContext, 0, nullptr, &cbNeverChanges, 0, 0);
 	g_CBBufferChangeOnResize.update(g_deviceContext, 0, nullptr, &cbChangesOnResize, 0, 0);
+
+	// Actualizar info logica del mesh
 	cb.mWorld = XMMatrixTranspose(g_World);
 	cb.vMeshColor = g_vMeshColor;
 	g_CBBufferChangesEveryFrame.update(g_deviceContext, 0, nullptr, &cb, 0, 0);
