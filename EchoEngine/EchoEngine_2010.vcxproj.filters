@@ -68,6 +68,9 @@
     <ClInclude Include="include\ModelLoader.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="include\stb_image.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EchoEngine.cpp" />

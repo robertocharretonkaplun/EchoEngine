@@ -40,7 +40,6 @@ std::vector<Buffer>                 g_indexBuffers;
 Buffer															g_CBBufferNeverChanges;
 Buffer															g_CBBufferChangeOnResize;
 Buffer															g_CBBufferChangesEveryFrame;
-Texture															g_modelTexture;
 SamplerState												g_sampler;
 ModelLoader													g_model;
 
@@ -51,7 +50,7 @@ XMMATRIX                            g_Projection;
 XMFLOAT4                            g_vMeshColor(0.7f, 0.7f, 0.7f, 1.0f);
 
 Mesh																g_mesh;
-
+Texture Default;
 std::vector<Texture> modelTextures;
 
 CBNeverChanges cbNeverChanges;
@@ -180,7 +179,7 @@ HRESULT InitDevice()
 	g_shaderProgram.init(g_device, "EchoEngine.fx", Layout);
 
 	// Load Model
-	g_model.LoadModel("Models/makeshift.fbx");
+	g_model.LoadModel("Models/Vela2.fbx");
 
 	for (auto& mesh : g_model.meshes) {
 		// Crear vertex buffer
@@ -236,22 +235,37 @@ HRESULT InitDevice()
 	//	}
 	//	modelTextures.push_back(texture);
 	//}
-	Texture Head_Diffuse;
-	Head_Diffuse.init(g_device, "Textures/Head_Diffuse.dds");
 	
-	Texture Torso_Diffuse;
-	Torso_Diffuse.init(g_device, "Textures/Torso_Diffuse.dds");
+	Texture Vela_Char_BaseColor;
+	Vela_Char_BaseColor.init(g_device, "Textures/Vela/Vela_Char_BaseColor.png");
 	
-	Texture Legs_Diffuse;
-	Legs_Diffuse.init(g_device, "Textures/Legs_Diffuse.dds");
+	Texture Vela_Corneas_BaseColor;
+	Vela_Corneas_BaseColor.init(g_device, "Textures/Vela/Vela_Corneas_BaseColor.png");
 	
-	Texture Tanks_Diffuse;
-	Tanks_Diffuse.init(g_device, "Textures/Tanks_Diffuse.dds");
+	Texture Vela_Gun_BaseColor;
+	Vela_Gun_BaseColor.init(g_device, "Textures/Vela/Vela_Gun_BaseColor.png");
+	
+	Texture Vela_Legs_BaseColor;
+	Vela_Legs_BaseColor.init(g_device, "Textures/Vela/Vela_Legs_BaseColor.png");
 
-	modelTextures.push_back(Head_Diffuse);
-	modelTextures.push_back(Legs_Diffuse);
-	modelTextures.push_back(Torso_Diffuse);
-	modelTextures.push_back(Tanks_Diffuse);
+	Texture Vela_Mechanical_BaseColor;
+	Vela_Mechanical_BaseColor.init(g_device, "Textures/Vela/Vela_Mechanical_BaseColor.png");
+	
+	Texture Vela_Plate_BaseColor;
+	Vela_Plate_BaseColor.init(g_device, "Textures/Vela/Vela_Plate_BaseColor.png");
+	
+	Texture Vela_Visor_BaseColor;
+	Vela_Visor_BaseColor.init(g_device, "Textures/Vela/Vela_Visor_BaseColor.png");
+
+	modelTextures.push_back(Vela_Corneas_BaseColor); // 5
+	modelTextures.push_back(Vela_Gun_BaseColor); // 5
+	modelTextures.push_back(Vela_Visor_BaseColor); // 5
+	modelTextures.push_back(Vela_Legs_BaseColor); // 5
+	modelTextures.push_back(Vela_Mechanical_BaseColor); // 5
+	modelTextures.push_back(Vela_Char_BaseColor); // 5
+	modelTextures.push_back(Vela_Plate_BaseColor); // 5
+	
+	Default.init(g_device, "Textures/Default.png");
 	// Load the Texture
 	//g_modelTexture.init(g_device, "seafloor.dds");
 
@@ -287,12 +301,13 @@ void CleanupDevice()
 	if (g_deviceContext.m_deviceContext) g_deviceContext.m_deviceContext->ClearState();
 
 	g_sampler.destroy();
-	g_modelTexture.destroy();
+	for (auto& tex : modelTextures) {
+		tex.destroy();
+	}
+	Default.destroy();
 	g_CBBufferNeverChanges.destroy();
 	g_CBBufferChangeOnResize.destroy();
 	g_CBBufferChangesEveryFrame.destroy();
-	//g_vertexBuffer.destroy();
-	//g_indexBuffer.destroy();
 
 	for (auto& vertexBuffer : g_vertexBuffers) {
 		vertexBuffer.destroy();
@@ -340,9 +355,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 // Update everyFrame
 void Update(float DeltaTime) {
 	// Rotate cube around the origin
-	XMVECTOR translation = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f); // Traslación en x=1, y=2, z=3
+	XMVECTOR translation = XMVectorSet(0.0f, -2.0f, 0.0f, 0.0f); // Traslación en x=1, y=2, z=3
 	XMVECTOR rotation = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(260), XMConvertToRadians(DeltaTime * 50), 0.0f); // Rotación en X=180, Y=180, Z=0
-	XMVECTOR scale = XMVectorSet(2.0f, 2.0f, 2.0f, 0.0f); // Escala por 2 en x, y, z
+	XMVECTOR scale = XMVectorSet(.03f, .03f, .03f, 0.0f); // Escala por 2 en x, y, z
 
 	// Combinar las transformaciones en una matriz de mundo
 	g_World = XMMatrixScalingFromVector(scale) * XMMatrixRotationQuaternion(rotation) * XMMatrixTranslationFromVector(translation);
@@ -388,10 +403,18 @@ void Render()
 	//g_vertexBuffer.render(g_deviceContext, 0, 1);
 	//g_indexBuffer.render(g_deviceContext, DXGI_FORMAT_R32_UINT);
 
+	// Render the models
 	for (size_t i = 0; i < g_model.meshes.size(); i++) {
 		g_vertexBuffers[i].render(g_deviceContext, 0, 1);
 		g_indexBuffers[i].render(g_deviceContext, DXGI_FORMAT_R32_UINT);
-		modelTextures[i].render(g_deviceContext, 0, 1);
+		if (i <= modelTextures.size() - 1)
+		{
+			modelTextures[i].render(g_deviceContext, 0, 1);
+		}
+		else {
+			Default.render(g_deviceContext, 0, 1);
+		}
+	  //Default.render(g_deviceContext, 0, 1);
 		g_sampler.render(g_deviceContext, 0, 1);
 
 		// Actualizar constant buffers
