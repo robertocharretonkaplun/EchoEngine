@@ -5,7 +5,7 @@
 #include <vector>
 #include <windows.h>
 #include <xnamath.h>
-
+#include <memory>
 // Librerias DirectX
 #include <d3d11.h>
 #include <d3dx11.h>
@@ -83,3 +83,22 @@ struct Mesh {
   int numVertex;
   int numIndex;
 };
+
+struct
+Vector3f {
+  Vector3f() = default;
+  Vector3f(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
+  float x = 0.0f;
+  float y = 0.0f;
+  float z = 0.0f;
+};
+
+struct
+Vector4f {
+  Vector4f(float _x, float _y, float _z, float _w ) : x(_x), y(_y), z(_z), w(_w) {}
+  float x = 0.0f;
+  float y = 0.0f;
+  float z = 0.0f;
+  float w = 0.0f;
+};
+

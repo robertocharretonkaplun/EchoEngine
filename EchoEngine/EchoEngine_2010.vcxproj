@@ -425,6 +425,7 @@
   <ItemGroup>
     <ClCompile Include="EchoEngine.cpp" />
     <ClCompile Include="include\InputLayout.cpp" />
+    <ClCompile Include="source\Actor.cpp" />
     <ClCompile Include="source\BaseApp.cpp" />
     <ClCompile Include="source\Buffer.cpp" />
     <ClCompile Include="source\DepthStencilView.cpp" />
@@ -436,6 +437,7 @@
     <ClCompile Include="source\ShaderProgram.cpp" />
     <ClCompile Include="source\SwapChain.cpp" />
     <ClCompile Include="source\Texture.cpp" />
+    <ClCompile Include="source\Transform.cpp" />
     <ClCompile Include="source\Viewport.cpp" />
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
@@ -456,12 +458,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Actor.h" />
     <ClInclude Include="include\BaseApp.h" />
     <ClInclude Include="include\Buffer.h" />
+    <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\DepthStencilView.h" />
     <ClInclude Include="include\Device.h" />
     <ClInclude Include="include\DeviceContext.h" />
+    <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\InputLayout.h" />
+    <ClInclude Include="include\MeshComponent.h" />
     <ClInclude Include="include\ModelLoader.h" />
     <ClInclude Include="include\PreRequisites.h" />
     <ClInclude Include="include\RenderTargetView.h" />
@@ -471,6 +477,7 @@
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\SwapChain.h" />
     <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\Transform.h" />
     <ClInclude Include="include\Viewport.h" />
     <ClInclude Include="include\Window.h" />
     <CLInclude Include="resource.h" />

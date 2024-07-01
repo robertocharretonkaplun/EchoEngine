@@ -18,6 +18,12 @@
     <Filter Include="Source">
       <UniqueIdentifier>{f33007ff-66b0-4693-ab75-b54ba0579a22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include\ECS">
+      <UniqueIdentifier>{3604fce2-5655-4887-90ba-1907d583d5fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ECS">
+      <UniqueIdentifier>{f56f3c3b-c4a0-4218-a0e5-ba1e0e5d5566}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BaseApp.h">
@@ -71,6 +77,21 @@
     <ClInclude Include="include\stb_image.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Entity.h">
+      <Filter>Include\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Transform.h">
+      <Filter>Include\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Actor.h">
+      <Filter>Include\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Component.h">
+      <Filter>Include\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshComponent.h">
+      <Filter>Include\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EchoEngine.cpp" />
@@ -115,6 +136,12 @@
     </ClCompile>
     <ClCompile Include="source\ModelLoader.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Transform.cpp">
+      <Filter>Source\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Actor.cpp">
+      <Filter>Source\ECS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
