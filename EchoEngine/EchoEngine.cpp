@@ -384,7 +384,7 @@ void Update(float DeltaTime) {
 void Render()
 {
 	// Clear the back buffer
-	float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; // red, green, blue, alpha
+	float ClearColor[4] = { 0.85f, 0.85f, 0.85f, 1.0f }; // red, green, blue, alpha
 	g_renderTargetView.render(g_deviceContext, g_depthStencilView, 1, ClearColor);
 
 	// Set Viewport
