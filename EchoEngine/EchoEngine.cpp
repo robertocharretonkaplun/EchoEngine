@@ -50,7 +50,7 @@ XMMATRIX                            g_Projection;
 XMFLOAT4                            g_vMeshColor(0.7f, 0.7f, 0.7f, 1.0f);
 
 Mesh																g_mesh;
-Texture Default;
+Texture g_default;
 std::vector<Texture> modelTextures;
 
 CBNeverChanges cbNeverChanges;
@@ -257,17 +257,16 @@ HRESULT InitDevice()
 	Texture Vela_Visor_BaseColor;
 	Vela_Visor_BaseColor.init(g_device, "Textures/Vela/Vela_Visor_BaseColor.png");
 
-	modelTextures.push_back(Vela_Corneas_BaseColor); // 5
-	modelTextures.push_back(Vela_Gun_BaseColor); // 5
-	modelTextures.push_back(Vela_Visor_BaseColor); // 5
-	modelTextures.push_back(Vela_Legs_BaseColor); // 5
+	modelTextures.push_back(Vela_Corneas_BaseColor);		// 1 
+	modelTextures.push_back(Vela_Gun_BaseColor);				// 2
+	modelTextures.push_back(Vela_Visor_BaseColor);			// 3
+	modelTextures.push_back(Vela_Legs_BaseColor);				// 4
 	modelTextures.push_back(Vela_Mechanical_BaseColor); // 5
-	modelTextures.push_back(Vela_Char_BaseColor); // 5
-	modelTextures.push_back(Vela_Plate_BaseColor); // 5
+	modelTextures.push_back(Vela_Char_BaseColor);				// 6
+	modelTextures.push_back(Vela_Plate_BaseColor);			// 7
 	
-	Default.init(g_device, "Textures/Default.png");
+	g_default.init(g_device, "Textures/Default.png");
 	// Load the Texture
-	//g_modelTexture.init(g_device, "seafloor.dds");
 
 	// Create the sample state
 	g_sampler.init(g_device);
@@ -304,7 +303,8 @@ void CleanupDevice()
 	for (auto& tex : modelTextures) {
 		tex.destroy();
 	}
-	Default.destroy();
+
+	g_default.destroy();
 	g_CBBufferNeverChanges.destroy();
 	g_CBBufferChangeOnResize.destroy();
 	g_CBBufferChangesEveryFrame.destroy();
@@ -412,9 +412,9 @@ void Render()
 			modelTextures[i].render(g_deviceContext, 0, 1);
 		}
 		else {
-			Default.render(g_deviceContext, 0, 1);
+			g_default.render(g_deviceContext, 0, 1);
 		}
-	  //Default.render(g_deviceContext, 0, 1);
+		//g_default.render(g_deviceContext, 0, 1);
 		g_sampler.render(g_deviceContext, 0, 1);
 
 		// Actualizar constant buffers
