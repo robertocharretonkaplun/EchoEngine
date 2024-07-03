@@ -7,3 +7,14 @@ Actor::Actor() {
 	std::shared_ptr<MeshComponent> Mesh = std::make_shared<MeshComponent>();
 	addComponent(Mesh);
 }
+
+void 
+Actor::update(float deltaTime) {
+
+}
+
+void 
+Actor::render(DeviceContext deviceContext) {
+
+}
+

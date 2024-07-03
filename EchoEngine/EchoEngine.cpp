@@ -18,6 +18,7 @@
 #include "Buffer.h"
 #include "SamplerState.h"
 #include "ModelLoader.h"
+#include "Actor.h"
 //#include "fbxsdk.h"
 //--------------------------------------------------------------------------------------
 // Global Variables
@@ -50,6 +51,9 @@ XMMATRIX                            g_Projection;
 XMFLOAT4                            g_vMeshColor(0.7f, 0.7f, 0.7f, 1.0f);
 
 Mesh																g_mesh;
+
+std::shared_ptr<Actor> actor = std::make_shared<Actor>();
+
 Texture g_default;
 std::vector<Texture> modelTextures;
 
@@ -265,7 +269,7 @@ HRESULT InitDevice()
 	modelTextures.push_back(Vela_Char_BaseColor);				// 6
 	modelTextures.push_back(Vela_Plate_BaseColor);			// 7
 	
-	g_default.init(g_device, "Textures/Default.png");
+	g_default.init(g_device, "Textures/Default.png");    
 	// Load the Texture
 
 	// Create the sample state
@@ -287,6 +291,19 @@ HRESULT InitDevice()
 	g_Projection = XMMatrixPerspectiveFovLH(XM_PIDIV4, g_window.m_width / (FLOAT)g_window.m_height, 0.01f, 100.0f);
 
 	cbChangesOnResize.mProjection = XMMatrixTranspose(g_Projection);
+
+
+	// Obtener el componente Transform del Actor
+	std::shared_ptr<Transform> transform = actor->getComponent<Transform>();
+	
+
+	if (transform) {
+		// Aquí puedes interactuar con el componente Transform
+		MESSAGE("Actor", "Component -> Transform", "Transform component accessed successfully.")
+	}
+	else {
+		MESSAGE("Actor", "Component -> Transform", "Transform component not found.")
+	}
 
 	return S_OK;
 }
@@ -389,19 +406,11 @@ void Render()
 
 	// Set Viewport
 	g_viewport.render(g_deviceContext);
-	//
 	// Clear the depth buffer to 1.0 (max depth)
-	//
 	g_depthStencilView.render(g_deviceContext);
-
-	//
-	// Update variables that change once per frame
-	//
 
 	// Render the cube
 	g_shaderProgram.render(g_deviceContext);
-	//g_vertexBuffer.render(g_deviceContext, 0, 1);
-	//g_indexBuffer.render(g_deviceContext, DXGI_FORMAT_R32_UINT);
 
 	// Render the models
 	for (size_t i = 0; i < g_model.meshes.size(); i++) {
@@ -425,22 +434,6 @@ void Render()
 		g_deviceContext.m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		g_deviceContext.m_deviceContext->DrawIndexed(g_model.meshes[i].numIndex, 0, 0);
 	}
-
-	//g_CBBufferNeverChanges.render(g_deviceContext, 0, 1); // Slot 0
-	//g_CBBufferChangeOnResize.render(g_deviceContext, 1, 1); // Slot 1
-	//g_CBBufferChangesEveryFrame.renderModel(g_deviceContext, 2, 1); // Slot 2
-	//g_modelTexture.render(g_deviceContext, 0, 1);
-	//for (size_t i = 0; i < modelTextures.size(); ++i) {
-	//	modelTextures[i].render(g_deviceContext, static_cast<unsigned int>(i), 1);
-	//}
-	//g_sampler.render(g_deviceContext, 0, 1);
-	// Set primitive topology
-	//g_deviceContext.m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//
-	//g_deviceContext.m_deviceContext->DrawIndexed(g_mesh.numIndex, 0, 0);
-	//
-	// Present our back buffer to our front buffer
-	//
 
 	g_swapchain.present();
 }

@@ -3,28 +3,24 @@
 
 void
 Transform::init() {
-  m_pos = new float[3];
-  m_rot = new float[3];
-  m_sca = new float[3];
+  scale.x = 1;
+  scale.y = 1;
+  scale.z = 1;
 
-  m_scale.x = 1;
-  m_scale.y = 1;
-  m_scale.z = 1;
-
-  m_matrix = XMMatrixIdentity();
+  matrix = XMMatrixIdentity();
 }
 
 void 
 Transform::update(float deltaTime) {
-  m_matrix = XMMatrixScaling(m_scale.x,
-    m_scale.y,
-    m_scale.z) *
-    XMMatrixRotationRollPitchYaw(m_rotation.x,
-      m_rotation.y,
-      m_rotation.z) *
-    XMMatrixTranslation(m_position.x,
-      m_position.y,
-      m_position.z);
+  matrix = XMMatrixScaling(scale.x,
+    scale.y,
+    scale.z) *
+    XMMatrixRotationRollPitchYaw(rotation.x,
+      rotation.y,
+      rotation.z) *
+    XMMatrixTranslation(position.x,
+      position.y,
+      position.z);
 }
 
 void Transform::render(DeviceContext deviceContext)

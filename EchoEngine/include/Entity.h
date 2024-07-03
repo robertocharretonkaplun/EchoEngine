@@ -8,7 +8,6 @@ class DeviceContext;
 class 
 Entity {
 public:
-  Entity() = default;
   virtual ~Entity() = default;
 
   // Métodos básicos
@@ -18,31 +17,27 @@ public:
   virtual void 
   render(DeviceContext deviceContext) = 0;
 
-  void 
-  addComponent(std::shared_ptr<Component> component)
-  {
-    m_components.push_back(component);
+  template <typename T>
+  void addComponent(std::shared_ptr<T> component) {
+    static_assert(std::is_base_of<Component, T>::value, "T must be derived from Component");
+    components.push_back(component);
   }
 
-  std::shared_ptr<Component> 
-  getComponent(ComponentType type) const
-  {
-    auto it = std::find_if(m_components.begin(), m_components.end(),
-      [&type](const std::shared_ptr<Component>& component) {
-        return component->getType() == type;
-      });
-
-    if (it != m_components.end())
-    {
-      return *it;
+  template <typename T>
+  std::shared_ptr<T> getComponent() {
+    for (auto& component : components) {
+      std::shared_ptr<T> specificComponent = std::dynamic_pointer_cast<T>(component);
+      if (specificComponent) {
+        return specificComponent;
+      }
     }
     return nullptr;
   }
 
 protected:
   // Estado
-  bool m_isActive;
-  std::string m_id;
+  bool isActive;
+  std::string id;
 
-  std::vector<std::shared_ptr<Component>> m_components;
+  std::vector<std::shared_ptr<Component>> components;
 };

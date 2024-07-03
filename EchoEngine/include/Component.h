@@ -14,6 +14,7 @@ ComponentType {
 class Component
 {
 public:
+  Component() = default;
   Component(const ComponentType type) : m_type(type) {}
   virtual ~Component() = default;
 

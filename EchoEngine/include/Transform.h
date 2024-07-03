@@ -2,40 +2,45 @@
 #include "PreRequisites.h"
 #include "Component.h"
 
-class DeviceContext;
-
-class 
-Transform : public Component {
+class Transform : public Component {
 public:
-  Transform() : Component(ComponentType::TRANSFORM) {}
-	virtual ~Transform() = default;
+  Transform() : position(), rotation(), scale(), matrix() {}
 
-	void 
-  init();
-
-  void 
-  update(float deltaTime) override;
+  // Métodos de acceso a los datos
+  const Vector3f& 
+  getPosition() const { return position; }
   
   void 
-  render(DeviceContext deviceContext) override;
+  setPosition(const Vector3f& newPos) { position = newPos; }
+
+  const Vector3f& 
+  getRotation() const { return rotation; }
+  
+  void 
+  setRotation(const Vector3f& newRot) { rotation = newRot; }
+
+  const Vector3f& 
+  getScale() const { return scale; }
+  
+  void 
+  setScale(const Vector3f& newScale) { scale = newScale; }
+
+  // Métodos para transformación y renderizado
+  void 
+  init();
+  
+  void 
+  update(float deltaTime);
+  
+  void 
+  render(DeviceContext deviceContext);
   
   void 
   destroy();
 
-  //void 
-  //ui(std::string wName);
-  //
-  //void 
-  //ui_noWindow(std::string wName);
-public:
-	Vector3f m_position;
-	Vector3f m_rotation;
-	Vector3f m_scale;
-  XMMATRIX m_matrix;
-  //UserInterface UI;
-  float* m_pos;
 private:
-  // UI data
-  float* m_rot;
-  float* m_sca;
+  Vector3f position;
+  Vector3f rotation;
+  Vector3f scale;
+  XMMATRIX matrix;
 };
