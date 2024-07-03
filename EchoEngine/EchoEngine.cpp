@@ -50,12 +50,17 @@ XMMATRIX                            g_View;
 XMMATRIX                            g_Projection;
 XMFLOAT4                            g_vMeshColor(0.7f, 0.7f, 0.7f, 1.0f);
 
+std::vector<SimpleVertex> gridVertices;
+std::vector<UINT> gridIndices;
+MeshComponent MC;
 //Mesh																g_mesh;
 
+std::shared_ptr<Actor> grid;
 std::shared_ptr<Actor> actor;
 
 Texture g_default;
 std::vector<Texture> modelTextures;
+std::vector<Texture> gridTexs;
 
 CBNeverChanges cbNeverChanges;
 CBChangeOnResize cbChangesOnResize;
@@ -124,7 +129,57 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	return (int)msg.wParam;
 }
 
+void CreateGrid(int width, int depth, float spacing)
+{
+	gridVertices.clear();
+	gridIndices.clear();
+	float halfLineWidth = .8 * 0.5f;
 
+	for (int i = -width; i <= width; ++i)
+	{
+		// Create vertices for a vertical line as two triangles
+		gridVertices.push_back({ XMFLOAT3(i * spacing - halfLineWidth, 0, -depth * spacing), XMFLOAT2(0.0f, 0.0f) });
+		gridVertices.push_back({ XMFLOAT3(i * spacing + halfLineWidth, 0, -depth * spacing), XMFLOAT2(0.0f, 0.0f) });
+		gridVertices.push_back({ XMFLOAT3(i * spacing - halfLineWidth, 0, depth * spacing), XMFLOAT2(0.0f, 0.0f) });
+		gridVertices.push_back({ XMFLOAT3(i * spacing + halfLineWidth, 0, depth * spacing), XMFLOAT2(0.0f, 0.0f) });
+
+		gridIndices.push_back(gridVertices.size() - 4);
+		gridIndices.push_back(gridVertices.size() - 3);
+		gridIndices.push_back(gridVertices.size() - 2);
+
+		gridIndices.push_back(gridVertices.size() - 3);
+		gridIndices.push_back(gridVertices.size() - 2);
+		gridIndices.push_back(gridVertices.size() - 1);
+	}
+
+	for (int i = -depth; i <= depth; ++i)
+	{
+		// Create vertices for a horizontal line as two triangles
+		gridVertices.push_back({ XMFLOAT3(-width * spacing, 0, i * spacing - halfLineWidth), XMFLOAT2(0.0f, 0.0f) });
+		gridVertices.push_back({ XMFLOAT3(width * spacing, 0, i * spacing - halfLineWidth), XMFLOAT2(0.0f, 0.0f) });
+		gridVertices.push_back({ XMFLOAT3(-width * spacing, 0, i * spacing + halfLineWidth), XMFLOAT2(0.0f, 0.0f) });
+		gridVertices.push_back({ XMFLOAT3(width * spacing, 0, i * spacing + halfLineWidth), XMFLOAT2(0.0f, 0.0f) });
+
+		gridIndices.push_back(gridVertices.size() - 4);
+		gridIndices.push_back(gridVertices.size() - 3);
+		gridIndices.push_back(gridVertices.size() - 2);
+
+		gridIndices.push_back(gridVertices.size() - 3);
+		gridIndices.push_back(gridVertices.size() - 2);
+		gridIndices.push_back(gridVertices.size() - 1);
+	}
+	MC.m_vertex = gridVertices;
+	MC.m_index = gridIndices;
+	MC.m_numVertex = gridVertices.size();
+	MC.m_numIndex = gridIndices.size();
+
+
+}
+
+void CreateGridBuffers()
+{
+	CreateGrid(100, 100, 5.0f); // Cambia los parámetros según tus necesidades
+}
 
 //--------------------------------------------------------------------------------------
 // Create Direct3D device and swap chain
@@ -181,6 +236,7 @@ HRESULT InitDevice()
 	Layout.push_back(texcoord);
 
 	g_shaderProgram.init(g_device, "EchoEngine.fx", Layout);
+	CreateGridBuffers();
 
 	// Load Model
 	g_model.LoadModel("Models/Vela2.fbx");
@@ -189,8 +245,8 @@ HRESULT InitDevice()
 	g_CBBufferNeverChanges.init(g_device, sizeof(CBNeverChanges));
 
 	g_CBBufferChangeOnResize.init(g_device, sizeof(CBChangeOnResize));
-
 	
+	// Load the Texture
 	Texture Vela_Char_BaseColor;
 	Vela_Char_BaseColor.init(g_device, "Textures/Vela/Vela_Char_BaseColor.png");
 	
@@ -221,7 +277,6 @@ HRESULT InitDevice()
 	modelTextures.push_back(Vela_Plate_BaseColor);			// 7
 	
 	g_default.init(g_device, "Textures/Default.png");    
-	// Load the Texture
 
 	// Initialize the world matrices
 	g_World = XMMatrixIdentity();
@@ -242,22 +297,36 @@ HRESULT InitDevice()
 
 	// Set Vela Actor
 	actor = std::make_shared<Actor>(g_device);
-
 	// Obtener el componente Transform del Actor
 	std::shared_ptr<Transform> transform = actor->getComponent<Transform>();
 
-	if (transform) {
-		// Aquí puedes interactuar con el componente Transform
-		MESSAGE("Actor", "Component -> Transform", "Transform component accessed successfully.")
-			transform->setPosition(Vector3f(0.0f, -2.0f, 0.0f));
-			transform->setRotation(Vector3f(XM_PI / -2.0f, 0.0f, XM_PI / 2.0f));
-			transform->setScale(Vector3f(.03f, .03f, .03f));
+	if (actor) {
+		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
+		actor->getComponent<Transform>()->setPosition(Vector3f(0.0f, -2.0f, 0.0f));
+		actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, 0.0f, XM_PI / 2.0f));
+		actor->getComponent<Transform>()->setScale(Vector3f(.03f, .03f, .03f));
+		actor->setMesh(g_device, g_model.meshes);
+		actor->setTextures(modelTextures);
 	}
 	else {
-		MESSAGE("Actor", "Component -> Transform", "Transform component not found.")
+		MESSAGE("Actor", "Actor", "Actor resource not found.")
 	}
-	actor->setMesh(g_device, g_model.meshes);
-	actor->setTextures(modelTextures);
+
+	grid = std::make_shared<Actor>(g_device);
+	if (actor) {
+		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
+		std::vector<MeshComponent> gridMesh;
+		gridMesh.push_back(MC);
+		grid->setMesh(g_device, gridMesh);
+		gridTexs.push_back(g_default);
+		grid->setTextures(gridTexs);
+		grid->getComponent<Transform>()->setPosition(Vector3f(0.0f, -2.0f, 0.0f));
+		grid->getComponent<Transform>()->setScale(Vector3f(.03f, .03f, .03f));
+	}
+	else {
+		MESSAGE("Actor", "Actor", "Actor resource not found.")
+	}
+	
 	return S_OK;
 }
 
@@ -270,8 +339,9 @@ void CleanupDevice()
 	if (g_deviceContext.m_deviceContext) g_deviceContext.m_deviceContext->ClearState();
 
 	actor->destroy();
+	grid->destroy();
 
-	g_default.destroy();
+	//g_default.destroy();
 	g_CBBufferNeverChanges.destroy();
 	g_CBBufferChangeOnResize.destroy();
 
@@ -319,6 +389,7 @@ void Update(float DeltaTime) {
 
 	// Actualizar info logica del mesh
 	actor->update(0, g_deviceContext);
+	grid->update(0, g_deviceContext);
 	actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, DeltaTime, XM_PI / 2.0f));
 }
 
@@ -341,6 +412,7 @@ void Render()
 
 	// Render the models
 	actor->render(g_deviceContext);
+	grid->render(g_deviceContext);
 
 	//for (size_t i = 0; i < 7; i++) {
 	//	//g_vertexBuffers[i].render(g_deviceContext, 0, 1);

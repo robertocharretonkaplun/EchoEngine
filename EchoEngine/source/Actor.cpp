@@ -28,12 +28,15 @@ Actor::render(DeviceContext deviceContext) {
 	for (size_t i = 0; i < m_meshes.size(); i++) {
 		m_vertexBuffers[i].render(deviceContext, 0, 1);
 		m_indexBuffers[i].render(deviceContext, DXGI_FORMAT_R32_UINT);
-		if (i <= m_textures.size() - 1)
+		if (m_textures.size() > 0)
 		{
-			m_textures[i].render(deviceContext, 0, 1);
-		}
-		else {
-			//m_default.render(deviceContext, 0, 1);
+			if (i <= m_textures.size() - 1)
+			{
+				m_textures[i].render(deviceContext, 0, 1);
+			}
+			else {
+				//m_default.render(deviceContext, 0, 1);
+			}
 		}
 		m_sampler.render(deviceContext, 0, 1);
 		m_modelBuffer.renderModel(deviceContext, 2, 1);
