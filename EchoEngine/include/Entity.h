@@ -12,7 +12,7 @@ public:
 
   // Métodos básicos
   virtual void 
-  update(float deltaTime) = 0;
+  update(float deltaTime, DeviceContext deviceContext) = 0;
   
   virtual void 
   render(DeviceContext deviceContext) = 0;

@@ -35,13 +35,13 @@ RenderTargetView										g_renderTargetView;
 Viewport														g_viewport;
 ShaderProgram												g_shaderProgram;
 //Buffer                              g_vertexBuffer;
-std::vector<Buffer>                 g_vertexBuffers;
+//std::vector<Buffer>                 g_vertexBuffers;
 //Buffer                              g_indexBuffer;
-std::vector<Buffer>                 g_indexBuffers;
+//std::vector<Buffer>                 g_indexBuffers;
 Buffer															g_CBBufferNeverChanges;
 Buffer															g_CBBufferChangeOnResize;
-Buffer															g_CBBufferChangesEveryFrame;
-SamplerState												g_sampler;
+//Buffer															g_CBBufferChangesEveryFrame;
+//SamplerState												g_sampler;
 ModelLoader													g_model;
 
 
@@ -50,9 +50,9 @@ XMMATRIX                            g_View;
 XMMATRIX                            g_Projection;
 XMFLOAT4                            g_vMeshColor(0.7f, 0.7f, 0.7f, 1.0f);
 
-Mesh																g_mesh;
+//Mesh																g_mesh;
 
-std::shared_ptr<Actor> actor = std::make_shared<Actor>();
+std::shared_ptr<Actor> actor;
 
 Texture g_default;
 std::vector<Texture> modelTextures;
@@ -185,60 +185,11 @@ HRESULT InitDevice()
 	// Load Model
 	g_model.LoadModel("Models/Vela2.fbx");
 
-	for (auto& mesh : g_model.meshes) {
-		// Crear vertex buffer
-		Buffer vertexBuffer;
-		vertexBuffer.init(g_device, mesh, D3D11_BIND_VERTEX_BUFFER);
-		g_vertexBuffers.push_back(vertexBuffer);
-
-		// Crear index buffer
-		Buffer indexBuffer;
-		indexBuffer.init(g_device, mesh, D3D11_BIND_INDEX_BUFFER);
-		g_indexBuffers.push_back(indexBuffer);
-
-		// Cargar la textura asociada con esta malla
-		//Texture texture;
-		//std::string texturePath = "Textures/" + mesh.name + ".dds";
-		//texture.init(g_device, texturePath.c_str());
-		//g_textures.push_back(texture);
-	}
-
-	// Create vertex buffer
-	//g_mesh.name = "MakeShift";
-	//g_mesh.vertex = g_model.GetVertices();
-	//g_mesh.numVertex = static_cast<unsigned int>(g_mesh.vertex.size());
-
-	// Create vertex buffer
-	//g_vertexBuffer.init(g_device, g_mesh, D3D11_BIND_VERTEX_BUFFER);
-
-	// Create index buffer
-	//g_mesh.index = g_model.GetIndices();
-	
-	//g_mesh.numIndex = static_cast<unsigned int>(g_mesh.index.size());
-
-	//g_indexBuffer.init(g_device, g_mesh, D3D11_BIND_INDEX_BUFFER);
-
 	// Inicialización de Constant Buffers
 	g_CBBufferNeverChanges.init(g_device, sizeof(CBNeverChanges));
 
 	g_CBBufferChangeOnResize.init(g_device, sizeof(CBChangeOnResize));
 
-	g_CBBufferChangesEveryFrame.init(g_device, sizeof(CBChangesEveryFrame));
-
-	// Load the Textures from the model
-	//std::vector<std::string> textureFileNames = g_model.GetTextureFileNames();
-	
-	//for (const auto& textureFileName : textureFileNames) {
-	//	Texture texture;
-	//	if (!textureFileName.empty()) {
-	//		texture.init(g_device, textureFileName.c_str());
-	//	}
-	//	else {
-	//		// Load a default texture or handle error
-	//		texture.init(g_device, "seafloor.dds");
-	//	}
-	//	modelTextures.push_back(texture);
-	//}
 	
 	Texture Vela_Char_BaseColor;
 	Vela_Char_BaseColor.init(g_device, "Textures/Vela/Vela_Char_BaseColor.png");
@@ -272,9 +223,6 @@ HRESULT InitDevice()
 	g_default.init(g_device, "Textures/Default.png");    
 	// Load the Texture
 
-	// Create the sample state
-	g_sampler.init(g_device);
-
 	// Initialize the world matrices
 	g_World = XMMatrixIdentity();
 
@@ -292,19 +240,24 @@ HRESULT InitDevice()
 
 	cbChangesOnResize.mProjection = XMMatrixTranspose(g_Projection);
 
+	// Set Vela Actor
+	actor = std::make_shared<Actor>(g_device);
 
 	// Obtener el componente Transform del Actor
 	std::shared_ptr<Transform> transform = actor->getComponent<Transform>();
-	
 
 	if (transform) {
 		// Aquí puedes interactuar con el componente Transform
 		MESSAGE("Actor", "Component -> Transform", "Transform component accessed successfully.")
+			transform->setPosition(Vector3f(0.0f, -2.0f, 0.0f));
+			transform->setRotation(Vector3f(XM_PI / -2.0f, 0.0f, XM_PI / 2.0f));
+			transform->setScale(Vector3f(.03f, .03f, .03f));
 	}
 	else {
 		MESSAGE("Actor", "Component -> Transform", "Transform component not found.")
 	}
-
+	actor->setMesh(g_device, g_model.meshes);
+	actor->setTextures(modelTextures);
 	return S_OK;
 }
 
@@ -316,23 +269,12 @@ void CleanupDevice()
 {
 	if (g_deviceContext.m_deviceContext) g_deviceContext.m_deviceContext->ClearState();
 
-	g_sampler.destroy();
-	for (auto& tex : modelTextures) {
-		tex.destroy();
-	}
+	actor->destroy();
 
 	g_default.destroy();
 	g_CBBufferNeverChanges.destroy();
 	g_CBBufferChangeOnResize.destroy();
-	g_CBBufferChangesEveryFrame.destroy();
 
-	for (auto& vertexBuffer : g_vertexBuffers) {
-		vertexBuffer.destroy();
-	}
-	
-	for (auto& indexBuffer : g_indexBuffers) {
-		indexBuffer.destroy();
-	}
 	g_shaderProgram.destroy();
 	g_depthStencil.destroy();
 	g_depthStencilView.destroy();
@@ -371,28 +313,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 // Update everyFrame
 void Update(float DeltaTime) {
-	// Rotate cube around the origin
-	XMVECTOR translation = XMVectorSet(0.0f, -2.0f, 0.0f, 0.0f); // Traslación en x=1, y=2, z=3
-	XMVECTOR rotation = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(260), XMConvertToRadians(DeltaTime * 50), 0.0f); // Rotación en X=180, Y=180, Z=0
-	XMVECTOR scale = XMVectorSet(.03f, .03f, .03f, 0.0f); // Escala por 2 en x, y, z
-
-	// Combinar las transformaciones en una matriz de mundo
-	g_World = XMMatrixScalingFromVector(scale) * XMMatrixRotationQuaternion(rotation) * XMMatrixTranslationFromVector(translation);
-	//g_World = XMMatrixRotationX(180) * XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixRotationZ(0);
-
-	// Modify the color
-	//g_vMeshColor.x = (sinf(DeltaTime * 1.0f) + 1.0f) * 0.5f;
-	//g_vMeshColor.y = (cosf(DeltaTime * 3.0f) + 1.0f) * 0.5f;
-	//g_vMeshColor.z = (sinf(DeltaTime * 5.0f) + 1.0f) * 0.5f;
-
 	// Update constant Buffers
 	g_CBBufferNeverChanges.update(g_deviceContext, 0, nullptr, &cbNeverChanges, 0, 0);
 	g_CBBufferChangeOnResize.update(g_deviceContext, 0, nullptr, &cbChangesOnResize, 0, 0);
 
 	// Actualizar info logica del mesh
-	cb.mWorld = XMMatrixTranspose(g_World);
-	cb.vMeshColor = g_vMeshColor;
-	g_CBBufferChangesEveryFrame.update(g_deviceContext, 0, nullptr, &cb, 0, 0);
+	actor->update(0, g_deviceContext);
+	actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, DeltaTime, XM_PI / 2.0f));
 }
 
 //--------------------------------------------------------------------------------------
@@ -413,27 +340,29 @@ void Render()
 	g_shaderProgram.render(g_deviceContext);
 
 	// Render the models
-	for (size_t i = 0; i < g_model.meshes.size(); i++) {
-		g_vertexBuffers[i].render(g_deviceContext, 0, 1);
-		g_indexBuffers[i].render(g_deviceContext, DXGI_FORMAT_R32_UINT);
-		if (i <= modelTextures.size() - 1)
-		{
-			modelTextures[i].render(g_deviceContext, 0, 1);
-		}
-		else {
-			g_default.render(g_deviceContext, 0, 1);
-		}
+	actor->render(g_deviceContext);
+
+	//for (size_t i = 0; i < 7; i++) {
+	//	//g_vertexBuffers[i].render(g_deviceContext, 0, 1);
+		//g_indexBuffers[i].render(g_deviceContext, DXGI_FORMAT_R32_UINT);
+		//if (i <= modelTextures.size() - 1)
+		//{
+		//	modelTextures[i].render(g_deviceContext, 0, 1);
+		//}
+		//else {
+		//	g_default.render(g_deviceContext, 0, 1);
+		//}
 		//g_default.render(g_deviceContext, 0, 1);
-		g_sampler.render(g_deviceContext, 0, 1);
-
-		// Actualizar constant buffers
-		g_CBBufferNeverChanges.render(g_deviceContext, 0, 1);
-		g_CBBufferChangeOnResize.render(g_deviceContext, 1, 1);
-		g_CBBufferChangesEveryFrame.renderModel(g_deviceContext, 2, 1);
-
-		g_deviceContext.m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		g_deviceContext.m_deviceContext->DrawIndexed(g_model.meshes[i].numIndex, 0, 0);
-	}
+		//g_sampler.render(g_deviceContext, 0, 1);
+	//
+	//
+	//	//g_deviceContext.m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//	//g_deviceContext.m_deviceContext->DrawIndexed(g_model.meshes[i].m_numIndex, 0, 0);
+	//}
+	
+	// Actualizar constant buffers
+	g_CBBufferNeverChanges.render(g_deviceContext, 0, 1);
+	g_CBBufferChangeOnResize.render(g_deviceContext, 1, 1);
 
 	g_swapchain.present();
 }

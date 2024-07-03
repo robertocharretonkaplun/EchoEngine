@@ -1,6 +1,7 @@
 #pragma once
 #include "PreRequisites.h"
 #include "fbxsdk.h"
+#include "MeshComponent.h"
 
 class 
 ModelLoader {
@@ -38,6 +39,6 @@ private:
   std::vector<unsigned int> indices;
   std::vector<std::string> textureFileNames;
 public:
-  std::vector<Mesh> meshes;
+  std::vector<MeshComponent> meshes;
 
 };

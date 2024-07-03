@@ -1,6 +1,4 @@
 #pragma once
-
-#pragma once
 #include "PreRequisites.h"
 #include "Component.h"
 #include "DeviceContext.h"
@@ -8,7 +6,7 @@
 class 
 MeshComponent : public Component {
 public:
-  MeshComponent() : Component(ComponentType::MESH) {}
+  MeshComponent() : m_numVertex(0), m_numIndex(0), Component(ComponentType::MESH) {}
 	virtual ~MeshComponent() = default;
 
   void 

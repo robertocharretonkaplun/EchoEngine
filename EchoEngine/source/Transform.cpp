@@ -12,15 +12,21 @@ Transform::init() {
 
 void 
 Transform::update(float deltaTime) {
-  matrix = XMMatrixScaling(scale.x,
-    scale.y,
-    scale.z) *
-    XMMatrixRotationRollPitchYaw(rotation.x,
-      rotation.y,
-      rotation.z) *
-    XMMatrixTranslation(position.x,
-      position.y,
-      position.z);
+  // Aplicar escala
+  XMMATRIX scaleMatrix = XMMatrixScaling(scale.x, scale.y, scale.z);
+
+  // Aplicar rotación con deltaTime en todas las componentes
+  XMMATRIX rotationMatrix = XMMatrixRotationRollPitchYaw(
+    rotation.x,
+    rotation.y,
+    rotation.z
+  );
+
+  // Aplicar traslación
+  XMMATRIX translationMatrix = XMMatrixTranslation(position.x, position.y, position.z);
+
+  // Componer la matriz final en el orden: scale -> rotation -> translation
+  matrix = scaleMatrix * rotationMatrix * translationMatrix;
 }
 
 void Transform::render(DeviceContext deviceContext)

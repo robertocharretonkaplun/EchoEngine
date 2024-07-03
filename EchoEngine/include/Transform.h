@@ -42,5 +42,6 @@ private:
   Vector3f position;
   Vector3f rotation;
   Vector3f scale;
+public:
   XMMATRIX matrix;
 };
