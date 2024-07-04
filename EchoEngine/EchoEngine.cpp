@@ -19,6 +19,7 @@
 #include "SamplerState.h"
 #include "ModelLoader.h"
 #include "Actor.h"
+#include "UserInterface.h"
 //#include "fbxsdk.h"
 //--------------------------------------------------------------------------------------
 // Global Variables
@@ -43,6 +44,7 @@ Buffer															g_CBBufferChangeOnResize;
 //Buffer															g_CBBufferChangesEveryFrame;
 //SamplerState												g_sampler;
 ModelLoader													g_model;
+UserInterface												g_userInterface;
 
 
 XMMATRIX                            g_World;
@@ -327,6 +329,11 @@ HRESULT InitDevice()
 		MESSAGE("Actor", "Actor", "Actor resource not found.")
 	}
 	
+	// Initialize User Interface
+	g_userInterface.init(g_window.m_hWnd,
+											 g_device.m_device,
+											 g_deviceContext.m_deviceContext);
+
 	return S_OK;
 }
 
@@ -351,6 +358,9 @@ void CleanupDevice()
 	g_renderTargetView.destroy();
 	g_swapchain.destroy();
 	g_deviceContext.destroy();
+	// Release UI
+	g_userInterface.destroy();
+
 	g_device.destroy();
 }
 
@@ -358,8 +368,11 @@ void CleanupDevice()
 //--------------------------------------------------------------------------------------
 // Called every time the application receives a message
 //--------------------------------------------------------------------------------------
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+		return true;
 	PAINTSTRUCT ps;
 	HDC hdc;
 
@@ -383,6 +396,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 // Update everyFrame
 void Update(float DeltaTime) {
+	g_userInterface.update();
+	bool show_demo_window = true;
+	ImGui::ShowDemoWindow(&show_demo_window);
 	// Update constant Buffers
 	g_CBBufferNeverChanges.update(g_deviceContext, 0, nullptr, &cbNeverChanges, 0, 0);
 	g_CBBufferChangeOnResize.update(g_deviceContext, 0, nullptr, &cbChangesOnResize, 0, 0);
@@ -435,6 +451,8 @@ void Render()
 	// Actualizar constant buffers
 	g_CBBufferNeverChanges.render(g_deviceContext, 0, 1);
 	g_CBBufferChangeOnResize.render(g_deviceContext, 1, 1);
+
+	g_userInterface.render();
 
 	g_swapchain.present();
 }
