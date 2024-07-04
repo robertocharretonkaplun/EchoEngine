@@ -250,25 +250,25 @@ HRESULT InitDevice()
 	
 	// Load the Texture
 	Texture Vela_Char_BaseColor;
-	Vela_Char_BaseColor.init(g_device, "Textures/Vela/Vela_Char_BaseColor.png");
+	Vela_Char_BaseColor.init(g_device, "Textures/Vela/Vela_Char_BaseColor.png", TextureExtensionType::PNG);
 	
 	Texture Vela_Corneas_BaseColor;
-	Vela_Corneas_BaseColor.init(g_device, "Textures/Vela/Vela_Corneas_BaseColor.png");
+	Vela_Corneas_BaseColor.init(g_device, "Textures/Vela/Vela_Corneas_BaseColor.png", TextureExtensionType::PNG);
 	
 	Texture Vela_Gun_BaseColor;
-	Vela_Gun_BaseColor.init(g_device, "Textures/Vela/Vela_Gun_BaseColor.png");
+	Vela_Gun_BaseColor.init(g_device, "Textures/Vela/Vela_Gun_BaseColor.png", TextureExtensionType::PNG);
 	
 	Texture Vela_Legs_BaseColor;
-	Vela_Legs_BaseColor.init(g_device, "Textures/Vela/Vela_Legs_BaseColor.png");
+	Vela_Legs_BaseColor.init(g_device, "Textures/Vela/Vela_Legs_BaseColor.png", TextureExtensionType::PNG);
 
 	Texture Vela_Mechanical_BaseColor;
-	Vela_Mechanical_BaseColor.init(g_device, "Textures/Vela/Vela_Mechanical_BaseColor.png");
+	Vela_Mechanical_BaseColor.init(g_device, "Textures/Vela/Vela_Mechanical_BaseColor.png", TextureExtensionType::PNG);
 	
 	Texture Vela_Plate_BaseColor;
-	Vela_Plate_BaseColor.init(g_device, "Textures/Vela/Vela_Plate_BaseColor.png");
+	Vela_Plate_BaseColor.init(g_device, "Textures/Vela/Vela_Plate_BaseColor.png", TextureExtensionType::PNG);
 	
 	Texture Vela_Visor_BaseColor;
-	Vela_Visor_BaseColor.init(g_device, "Textures/Vela/Vela_Visor_BaseColor.png");
+	Vela_Visor_BaseColor.init(g_device, "Textures/Vela/Vela_Visor_BaseColor.png", TextureExtensionType::PNG);
 
 	modelTextures.push_back(Vela_Corneas_BaseColor);		// 1 
 	modelTextures.push_back(Vela_Gun_BaseColor);				// 2
@@ -278,7 +278,7 @@ HRESULT InitDevice()
 	modelTextures.push_back(Vela_Char_BaseColor);				// 6
 	modelTextures.push_back(Vela_Plate_BaseColor);			// 7
 	
-	g_default.init(g_device, "Textures/Default.png");    
+	g_default.init(g_device, "Textures/Default.png", TextureExtensionType::PNG);
 
 	// Initialize the world matrices
 	g_World = XMMatrixIdentity();
@@ -304,7 +304,7 @@ HRESULT InitDevice()
 
 	if (actor) {
 		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
-		actor->getComponent<Transform>()->setPosition(Vector3f(0.0f, -2.0f, 2.0f));
+		actor->getComponent<Transform>()->setPosition(Vector3f(-0.5f, -2.0f, 2.0f));
 		actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, 0.0f, XM_PI / 2.0f));
 		actor->getComponent<Transform>()->setScale(Vector3f(.03f, .03f, .03f));
 		actor->setMesh(g_device, g_model.meshes);

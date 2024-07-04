@@ -16,7 +16,9 @@ public:
 	/// <param name="device">: Llamamos al device para poder generar los recursos en memoria. </param>
 	/// <param name="textureName">: Almacenamos el nombre de la textura, para cargala desde memoria. </param>
   HRESULT
-  init(Device device, std::string textureName);
+  init(Device device,
+    std::string textureName,
+    ExtensionType extensionType);
 
 	/// <summary>
   /// Brief: This method is responsible for creating a 2D Texture from the data provided
