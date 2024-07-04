@@ -178,7 +178,7 @@ void CreateGrid(int width, int depth, float spacing)
 
 void CreateGridBuffers()
 {
-	CreateGrid(100, 100, 5.0f); // Cambia los parámetros según tus necesidades
+	CreateGrid(50, 50, 15.0f); // Cambia los parámetros según tus necesidades
 }
 
 //--------------------------------------------------------------------------------------
@@ -302,7 +302,7 @@ HRESULT InitDevice()
 
 	if (actor) {
 		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
-		actor->getComponent<Transform>()->setPosition(Vector3f(0.0f, -2.0f, 0.0f));
+		actor->getComponent<Transform>()->setPosition(Vector3f(0.0f, -2.0f, 2.0f));
 		actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, 0.0f, XM_PI / 2.0f));
 		actor->getComponent<Transform>()->setScale(Vector3f(.03f, .03f, .03f));
 		actor->setMesh(g_device, g_model.meshes);
