@@ -35,14 +35,8 @@ DepthStencilView										g_depthStencilView;
 RenderTargetView										g_renderTargetView;
 Viewport														g_viewport;
 ShaderProgram												g_shaderProgram;
-//Buffer                              g_vertexBuffer;
-//std::vector<Buffer>                 g_vertexBuffers;
-//Buffer                              g_indexBuffer;
-//std::vector<Buffer>                 g_indexBuffers;
 Buffer															g_CBBufferNeverChanges;
 Buffer															g_CBBufferChangeOnResize;
-//Buffer															g_CBBufferChangesEveryFrame;
-//SamplerState												g_sampler;
 ModelLoader													g_model;
 UserInterface												g_userInterface;
 
@@ -250,25 +244,25 @@ HRESULT InitDevice()
 	
 	// Load the Texture
 	Texture Vela_Char_BaseColor;
-	Vela_Char_BaseColor.init(g_device, "Textures/Vela/Vela_Char_BaseColor.png", TextureExtensionType::PNG);
+	Vela_Char_BaseColor.init(g_device, "Textures/Vela/Vela_Char_BaseColor.png", ExtensionType::PNG);
 	
 	Texture Vela_Corneas_BaseColor;
-	Vela_Corneas_BaseColor.init(g_device, "Textures/Vela/Vela_Corneas_BaseColor.png", TextureExtensionType::PNG);
+	Vela_Corneas_BaseColor.init(g_device, "Textures/Vela/Vela_Corneas_BaseColor.png", ExtensionType::PNG);
 	
 	Texture Vela_Gun_BaseColor;
-	Vela_Gun_BaseColor.init(g_device, "Textures/Vela/Vela_Gun_BaseColor.png", TextureExtensionType::PNG);
+	Vela_Gun_BaseColor.init(g_device, "Textures/Vela/Vela_Gun_BaseColor.png", ExtensionType::PNG);
 	
 	Texture Vela_Legs_BaseColor;
-	Vela_Legs_BaseColor.init(g_device, "Textures/Vela/Vela_Legs_BaseColor.png", TextureExtensionType::PNG);
+	Vela_Legs_BaseColor.init(g_device, "Textures/Vela/Vela_Legs_BaseColor.png", ExtensionType::PNG);
 
 	Texture Vela_Mechanical_BaseColor;
-	Vela_Mechanical_BaseColor.init(g_device, "Textures/Vela/Vela_Mechanical_BaseColor.png", TextureExtensionType::PNG);
+	Vela_Mechanical_BaseColor.init(g_device, "Textures/Vela/Vela_Mechanical_BaseColor.png", ExtensionType::PNG);
 	
 	Texture Vela_Plate_BaseColor;
-	Vela_Plate_BaseColor.init(g_device, "Textures/Vela/Vela_Plate_BaseColor.png", TextureExtensionType::PNG);
+	Vela_Plate_BaseColor.init(g_device, "Textures/Vela/Vela_Plate_BaseColor.png", ExtensionType::PNG);
 	
 	Texture Vela_Visor_BaseColor;
-	Vela_Visor_BaseColor.init(g_device, "Textures/Vela/Vela_Visor_BaseColor.png", TextureExtensionType::PNG);
+	Vela_Visor_BaseColor.init(g_device, "Textures/Vela/Vela_Visor_BaseColor.png", ExtensionType::PNG);
 
 	modelTextures.push_back(Vela_Corneas_BaseColor);		// 1 
 	modelTextures.push_back(Vela_Gun_BaseColor);				// 2
@@ -278,7 +272,7 @@ HRESULT InitDevice()
 	modelTextures.push_back(Vela_Char_BaseColor);				// 6
 	modelTextures.push_back(Vela_Plate_BaseColor);			// 7
 	
-	g_default.init(g_device, "Textures/Default.png", TextureExtensionType::PNG);
+	g_default.init(g_device, "Textures/Default.png", ExtensionType::PNG);
 
 	// Initialize the world matrices
 	g_World = XMMatrixIdentity();
@@ -304,7 +298,7 @@ HRESULT InitDevice()
 
 	if (actor) {
 		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
-		actor->getComponent<Transform>()->setPosition(Vector3f(-0.5f, -2.0f, 2.0f));
+		actor->getComponent<Transform>()->setPosition(Vector3f(-0.9f, -2.0f, 2.0f));
 		actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, 0.0f, XM_PI / 2.0f));
 		actor->getComponent<Transform>()->setScale(Vector3f(.03f, .03f, .03f));
 		actor->setMesh(g_device, g_model.meshes);
@@ -315,7 +309,7 @@ HRESULT InitDevice()
 	}
 
 	grid = std::make_shared<Actor>(g_device);
-	if (actor) {
+	if (grid) {
 		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
 		std::vector<MeshComponent> gridMesh;
 		gridMesh.push_back(MC);
@@ -399,6 +393,17 @@ void Update(float DeltaTime) {
 	g_userInterface.update();
 	bool show_demo_window = true;
 	ImGui::ShowDemoWindow(&show_demo_window);
+	//g_userInterface.vec3Control("Transform", actor->getComponent<Transform>()->getPosition().data());
+	ImGui::Begin("Inspector");
+	g_userInterface.vec3Control("Position", const_cast<float*>(actor->getComponent<Transform>()->getPosition().data()));
+	g_userInterface.vec3Control("Rotation", const_cast<float*>(actor->getComponent<Transform>()->getRotation().data()));
+	g_userInterface.vec3Control("Scale", const_cast<float*>(actor->getComponent<Transform>()->getScale().data()));
+
+	ImGui::Separator();
+	g_userInterface.vec3Control("Position G", const_cast<float*>(grid->getComponent<Transform>()->getPosition().data()));
+	g_userInterface.vec3Control("Rotation G", const_cast<float*>(grid->getComponent<Transform>()->getRotation().data()));
+	g_userInterface.vec3Control("Scale G", const_cast<float*>(grid->getComponent<Transform>()->getScale().data()));
+	ImGui::End();
 	// Update constant Buffers
 	g_CBBufferNeverChanges.update(g_deviceContext, 0, nullptr, &cbNeverChanges, 0, 0);
 	g_CBBufferChangeOnResize.update(g_deviceContext, 0, nullptr, &cbChangesOnResize, 0, 0);
