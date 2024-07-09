@@ -1,5 +1,6 @@
 #pragma once
 #include "PreRequisites.h"
+#include "UserInterface.h"
 #include "Component.h"
 
 class Transform : public Component {
@@ -38,10 +39,16 @@ public:
   void 
   destroy();
 
+  void
+  ui(std::string wName);
+
+  void
+  ui_noWindow(std::string wName);
 private:
   Vector3f position;
   Vector3f rotation;
   Vector3f scale;
+  UserInterface UI;
 public:
   XMMATRIX matrix;
 };

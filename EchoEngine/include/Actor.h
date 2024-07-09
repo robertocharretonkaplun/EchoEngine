@@ -31,6 +31,9 @@ public:
 
 	void
 	setTextures(std::vector<Texture> textures);
+
+	std::string 
+	getName() { return m_name; }
 private:
 	std::vector<MeshComponent> m_meshes;
 	std::vector<Texture> m_textures;
@@ -40,6 +43,7 @@ private:
 	std::vector<Buffer>                 m_indexBuffers;
 	Buffer															m_modelBuffer;
 	CBChangesEveryFrame model;
+	std::string m_name= "Actor";
 };
 
 template<typename T>

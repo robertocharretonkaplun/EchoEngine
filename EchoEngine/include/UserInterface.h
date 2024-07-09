@@ -29,10 +29,10 @@ public:
   destroy();
 
   void
-  vec3Control(std::string label,
-      float* values,
-      float resetValues = 0.0f,
-      float columnWidth = 100.0f);
+  vec3Control(const std::string& label,
+              float* values,
+              float resetValues = 0.0f,
+              float columnWidth = 100.0f);
 
   void 
   menuBar(Window window, SwapChain swapChain, Texture& backBuffer);

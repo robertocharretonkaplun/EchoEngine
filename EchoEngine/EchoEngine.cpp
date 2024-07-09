@@ -298,6 +298,7 @@ HRESULT InitDevice()
 
 	if (actor) {
 		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
+		
 		actor->getComponent<Transform>()->setPosition(Vector3f(-0.9f, -2.0f, 2.0f));
 		actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, 0.0f, XM_PI / 2.0f));
 		actor->getComponent<Transform>()->setScale(Vector3f(.03f, .03f, .03f));
@@ -395,14 +396,55 @@ void Update(float DeltaTime) {
 	ImGui::ShowDemoWindow(&show_demo_window);
 	//g_userInterface.vec3Control("Transform", actor->getComponent<Transform>()->getPosition().data());
 	ImGui::Begin("Inspector");
-	g_userInterface.vec3Control("Position", const_cast<float*>(actor->getComponent<Transform>()->getPosition().data()));
-	g_userInterface.vec3Control("Rotation", const_cast<float*>(actor->getComponent<Transform>()->getRotation().data()));
-	g_userInterface.vec3Control("Scale", const_cast<float*>(actor->getComponent<Transform>()->getScale().data()));
+	// Checkbox para Static
+	bool isStatic = false;
+	ImGui::Checkbox("##Static", &isStatic);
+	ImGui::SameLine();
+
+	// Input text para el nombre del objeto
+	char objectName[128] = "Cube";
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() * 0.6f);
+	ImGui::InputText("##ObjectName", objectName, IM_ARRAYSIZE(objectName));
+	ImGui::SameLine();
+
+	// Icono (este puede ser una imagen, aquí solo como ejemplo de botón)
+	if (ImGui::Button("Icon")) {
+		// Lógica del botón de icono aquí
+	}
+
+	// Separador horizontal
+	ImGui::Separator();
+
+	// Dropdown para Tag
+	const char* tags[] = { "Untagged", "Player", "Enemy", "Environment" };
+	static int currentTag = 0;
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() * 0.5f);
+	ImGui::Combo("Tag", &currentTag, tags, IM_ARRAYSIZE(tags));
+	ImGui::SameLine();
+
+	// Dropdown para Layer
+	const char* layers[] = { "Default", "TransparentFX", "Ignore Raycast", "Water", "UI" };
+	static int currentLayer = 0;
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() * 0.5f);
+	ImGui::Combo("Layer", &currentLayer, layers, IM_ARRAYSIZE(layers));
 
 	ImGui::Separator();
-	g_userInterface.vec3Control("Position G", const_cast<float*>(grid->getComponent<Transform>()->getPosition().data()));
-	g_userInterface.vec3Control("Rotation G", const_cast<float*>(grid->getComponent<Transform>()->getRotation().data()));
-	g_userInterface.vec3Control("Scale G", const_cast<float*>(grid->getComponent<Transform>()->getScale().data()));
+
+	actor->getComponent<Transform>()->ui_noWindow("Transform");
+	ImGui::Separator();
+	grid->getComponent<Transform>()->ui_noWindow("Grid Transform");
+
+	// Mostrar la textura en la ventana de ImGui
+	if (!modelTextures.empty()) {
+		ImGui::Text("Model Texture:");
+		// Usa el primer SRV de la lista de texturas del modelo
+		for (auto& texture : modelTextures) {
+			ImGui::ImageButton((void*)texture.m_textureFromImg, ImVec2(64, 64));
+			ImGui::SameLine();
+		}
+	}
+
+
 	ImGui::End();
 	// Update constant Buffers
 	g_CBBufferNeverChanges.update(g_deviceContext, 0, nullptr, &cbNeverChanges, 0, 0);
