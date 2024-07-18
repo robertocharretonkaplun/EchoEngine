@@ -105,6 +105,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		}
 		else
 		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(16)); // Simula aproximadamente 60 FPS
 			// Update our time
 			static float t = 0.0f;
 			if (g_swapchain.m_driverType == D3D_DRIVER_TYPE_REFERENCE)
@@ -119,7 +120,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 					dwTimeStart = dwTimeCur;
 				t = (dwTimeCur - dwTimeStart) / 1000.0f;
 			}
-			std::this_thread::sleep_for(std::chrono::milliseconds(16)); // Simula aproximadamente 60 FPS
 
 			g_timer.Tick();
 			double deltaTime = g_timer.GetDeltaTime();
@@ -462,6 +462,8 @@ void Update(double DeltaTime) {
 	// Actualizar info logica del mesh
 	actor->update(0, g_deviceContext);
 	grid->update(0, g_deviceContext);
+	//Vector3f translation(0.0f, 0.0f, DeltaTime);
+	//actor->getComponent<Transform>()->translate(translation);
 	//actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, DeltaTime, XM_PI / 2.0f));
 }
 

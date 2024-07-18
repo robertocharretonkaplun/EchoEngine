@@ -99,36 +99,49 @@ struct Mesh {
  */
 struct Vector3f {
   // Constructor predeterminado
+  // Inicializa los componentes del vector a 0
   constexpr Vector3f() = default;
 
   // Constructor con inicialización de componentes
+  // @param _x: Componente en el eje X
+  // @param _y: Componente en el eje Y
+  // @param _z: Componente en el eje Z
   constexpr Vector3f(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
 
-  // Inicialización de los componentes
-  float x = 0.0f;
-  float y = 0.0f;
-  float z = 0.0f;
+  // Variables miembro que representan los componentes del vector
+  float x = 0.0f;  // Componente en el eje X
+  float y = 0.0f;  // Componente en el eje Y
+  float z = 0.0f;  // Componente en el eje Z
 
   // Método para obtener un puntero a los datos como un arreglo
+  // @return: Puntero a los componentes del vector
   float* data() { return &x; }
   const float* data() const { return &x; }
 
   // Sobrecarga del operador de suma
+  // @param other: Otro vector a sumar
+  // @return: Resultado de la suma de los vectores
   constexpr Vector3f operator+(const Vector3f& other) const {
     return Vector3f(x + other.x, y + other.y, z + other.z);
   }
 
   // Sobrecarga del operador de resta
+  // @param other: Otro vector a restar
+  // @return: Resultado de la resta de los vectores
   constexpr Vector3f operator-(const Vector3f& other) const {
     return Vector3f(x - other.x, y - other.y, z - other.z);
   }
 
   // Sobrecarga del operador de multiplicación por un escalar
+  // @param scalar: Escalar por el cual multiplicar el vector
+  // @return: Resultado de la multiplicación del vector por el escalar
   constexpr Vector3f operator*(float scalar) const {
     return Vector3f(x * scalar, y * scalar, z * scalar);
   }
 
   // Sobrecarga del operador de división por un escalar
+  // @param scalar: Escalar por el cual dividir el vector
+  // @return: Resultado de la división del vector por el escalar
   constexpr Vector3f operator/(float scalar) const {
     return Vector3f(x / scalar, y / scalar, z / scalar);
   }
@@ -136,37 +149,51 @@ struct Vector3f {
 
 struct Vector4f {
   // Constructor predeterminado
+  // Inicializa los componentes del vector a 0
   constexpr Vector4f() = default;
 
   // Constructor con inicialización de componentes
+  // @param _x: Componente en el eje X
+  // @param _y: Componente en el eje Y
+  // @param _z: Componente en el eje Z
+  // @param _w: Componente en el eje W
   constexpr Vector4f(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w) {}
 
-  // Inicialización de los componentes
-  float x = 0.0f;
-  float y = 0.0f;
-  float z = 0.0f;
-  float w = 0.0f;
+  // Variables miembro que representan los componentes del vector
+  float x = 0.0f;  // Componente en el eje X
+  float y = 0.0f;  // Componente en el eje Y
+  float z = 0.0f;  // Componente en el eje Z
+  float w = 0.0f;  // Componente en el eje W
 
   // Método para obtener un puntero a los datos como un arreglo
+  // @return: Puntero a los componentes del vector
   float* data() { return &x; }
   const float* data() const { return &x; }
 
   // Sobrecarga del operador de suma
+  // @param other: Otro vector a sumar
+  // @return: Resultado de la suma de los vectores
   constexpr Vector4f operator+(const Vector4f& other) const {
     return Vector4f(x + other.x, y + other.y, z + other.z, w + other.w);
   }
 
   // Sobrecarga del operador de resta
+  // @param other: Otro vector a restar
+  // @return: Resultado de la resta de los vectores
   constexpr Vector4f operator-(const Vector4f& other) const {
     return Vector4f(x - other.x, y - other.y, z - other.z, w - other.w);
   }
 
   // Sobrecarga del operador de multiplicación por un escalar
+  // @param scalar: Escalar por el cual multiplicar el vector
+  // @return: Resultado de la multiplicación del vector por el escalar
   constexpr Vector4f operator*(float scalar) const {
     return Vector4f(x * scalar, y * scalar, z * scalar, w * scalar);
   }
 
   // Sobrecarga del operador de división por un escalar
+  // @param scalar: Escalar por el cual dividir el vector
+  // @return: Resultado de la división del vector por el escalar
   constexpr Vector4f operator/(float scalar) const {
     return Vector4f(x / scalar, y / scalar, z / scalar, w / scalar);
   }

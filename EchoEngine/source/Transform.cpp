@@ -1,6 +1,11 @@
 #include "Transform.h"
 #include "DeviceContext.h"
 
+void 
+Transform::translate(const Vector3f& translation) {
+  position = position + translation;
+}
+
 void
 Transform::init() {
   scale.x = 1;
