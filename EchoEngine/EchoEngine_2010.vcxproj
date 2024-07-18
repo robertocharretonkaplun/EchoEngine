@@ -438,6 +438,7 @@
     <ClCompile Include="source\DepthStencilView.cpp" />
     <ClCompile Include="source\Device.cpp" />
     <ClCompile Include="source\DeviceContext.cpp" />
+    <ClCompile Include="source\EETimer.cpp" />
     <ClCompile Include="source\ModelLoader.cpp" />
     <ClCompile Include="source\RenderTargetView.cpp" />
     <ClCompile Include="source\SamplerState.cpp" />
@@ -482,6 +483,7 @@
     <ClInclude Include="include\DepthStencilView.h" />
     <ClInclude Include="include\Device.h" />
     <ClInclude Include="include\DeviceContext.h" />
+    <ClInclude Include="include\EETimer.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\InputLayout.h" />
     <ClInclude Include="include\MeshComponent.h" />

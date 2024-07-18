@@ -61,6 +61,10 @@ UserInterface::update() {
   ImGui_ImplDX11_NewFrame();
   ImGui_ImplWin32_NewFrame();
   ImGui::NewFrame();
+
+  // In Program always
+  ToolBar();
+  closeApp();
 }
 
 void 
@@ -626,4 +630,97 @@ UserInterface::toolTipData() {
     "\n"
     "NOTE:\n"
     "* This feature is WIP consider that it's possible that some things might not work correctly.\n");
+}
+
+void 
+UserInterface::ToolBar() {
+  if (ImGui::BeginMainMenuBar()) {
+    if (ImGui::BeginMenu("File")) {
+      if (ImGui::MenuItem("New")) {
+        // Acción para "New"
+      }
+      if (ImGui::MenuItem("Open")) {
+        // Acción para "Open"
+      }
+      if (ImGui::MenuItem("Save")) {
+        // Acción para "Save"
+      }
+      if (ImGui::MenuItem("Exit")) {
+        // Acción para "Exit"
+        show_exit_popup = true;
+        ImGui::OpenPopup("Exit?");
+        //closeApp();
+      }
+      ImGui::EndMenu();
+    }
+    if (ImGui::BeginMenu("Edit")) {
+      if (ImGui::MenuItem("Undo")) {
+        // Acción para "Undo"
+      }
+      if (ImGui::MenuItem("Redo")) {
+        // Acción para "Redo"
+      }
+      if (ImGui::MenuItem("Cut")) {
+        // Acción para "Cut"
+      }
+      if (ImGui::MenuItem("Copy")) {
+        // Acción para "Copy"
+      }
+      if (ImGui::MenuItem("Paste")) {
+        // Acción para "Paste"
+      }
+      ImGui::EndMenu();
+    }
+    if (ImGui::BeginMenu("Tools")) {
+      if (ImGui::MenuItem("Options")) {
+        // Acción para "Options"
+      }
+      if (ImGui::MenuItem("Settings")) {
+        // Acción para "Settings"
+      }
+      ImGui::EndMenu();
+    }
+    ImGui::EndMainMenuBar();
+  }
+}
+
+void 
+UserInterface::closeApp() {
+  if (show_exit_popup) {
+    ImGui::OpenPopup("Exit?");
+    show_exit_popup = false; // Reset the flag
+  }
+  // Centrar el popup en la pantalla
+  ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+  ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+  if (ImGui::BeginPopupModal("Exit?", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+    ImGui::Text("Estas a punto de salir de la aplicacion.\nEstas seguro?\n\n");
+    ImGui::Separator();
+
+    if (ImGui::Button("OK", ImVec2(120, 0))) {
+      exit(0); // Salir de la aplicación
+      ImGui::CloseCurrentPopup();
+    }
+    ImGui::SetItemDefaultFocus();
+    ImGui::SameLine();
+    if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+      ImGui::CloseCurrentPopup();
+    }
+    ImGui::EndPopup();
+  }
+}
+
+void 
+UserInterface::RenderFullScreenTransparentWindow() {
+  // Configurar la ventana para ser transparente y ocupar toda la pantalla
+  ImGui::SetNextWindowPos(ImVec2(0, 0));
+  ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+  ImGui::SetNextWindowBgAlpha(0.0f); // Hacer la ventana completamente transparente
+
+  ImGuiWindowFlags window_flags = ImGuiWindowFlags_AlwaysAutoResize;
+
+  ImGui::Begin("FullScreenTransparentWindow", NULL, window_flags);
+  // Puedes agregar contenido aquí si lo necesitas
+  ImGui::End();
 }

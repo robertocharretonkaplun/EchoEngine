@@ -6,6 +6,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //--------------------------------------------------------------------------------------
 #include "PreRequisites.h"
+#include "EETimer.h"
 #include "Window.h"
 #include "Device.h"
 #include "DeviceContext.h"
@@ -20,11 +21,12 @@
 #include "ModelLoader.h"
 #include "Actor.h"
 #include "UserInterface.h"
+
 //#include "fbxsdk.h"
 //--------------------------------------------------------------------------------------
 // Global Variables
 //--------------------------------------------------------------------------------------
-
+EETimer															g_timer;
 Window															g_window;
 Device															g_device;
 DeviceContext												g_deviceContext;
@@ -39,7 +41,6 @@ Buffer															g_CBBufferNeverChanges;
 Buffer															g_CBBufferChangeOnResize;
 ModelLoader													g_model;
 UserInterface												g_userInterface;
-
 
 XMMATRIX                            g_World;
 XMMATRIX                            g_View;
@@ -68,7 +69,7 @@ HRESULT InitDevice();
 void CleanupDevice();
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 void Render();
-void Update(float DeltaTime);
+void Update(double DeltaTime);
 
 
 //--------------------------------------------------------------------------------------
@@ -82,7 +83,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	if (FAILED(g_window.init(hInstance, nCmdShow, WndProc)))
+	{
+		g_timer.Start();
 		return 0;
+	}
 
 	if (FAILED(InitDevice()))
 	{
@@ -115,7 +119,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 					dwTimeStart = dwTimeCur;
 				t = (dwTimeCur - dwTimeStart) / 1000.0f;
 			}
-			Update(t);
+			std::this_thread::sleep_for(std::chrono::milliseconds(16)); // Simula aproximadamente 60 FPS
+
+			g_timer.Tick();
+			double deltaTime = g_timer.GetDeltaTime();
+
+			Update(deltaTime);
 			Render();
 		}
 	}
@@ -188,23 +197,23 @@ HRESULT InitDevice()
 	g_swapchain.init(g_device, g_deviceContext, g_backBuffer, g_window);
 
 	// Create render target view
-	g_renderTargetView.init(g_device, 
-													g_backBuffer, 
-													DXGI_FORMAT_R8G8B8A8_UNORM);
+	g_renderTargetView.init(g_device,
+		g_backBuffer,
+		DXGI_FORMAT_R8G8B8A8_UNORM);
 
 	// Create depth stencil texture
-	g_depthStencil.init(g_device, 
-											g_window.m_width, 
-											g_window.m_height, 
-											DXGI_FORMAT_D24_UNORM_S8_UINT, 
-											D3D11_BIND_DEPTH_STENCIL);
-	
-	// Create the depth stencil view
-	g_depthStencilView.init(g_device, 
-													g_depthStencil, 
-													DXGI_FORMAT_D24_UNORM_S8_UINT);
+	g_depthStencil.init(g_device,
+		g_window.m_width,
+		g_window.m_height,
+		DXGI_FORMAT_D24_UNORM_S8_UINT,
+		D3D11_BIND_DEPTH_STENCIL);
 
-	
+	// Create the depth stencil view
+	g_depthStencilView.init(g_device,
+		g_depthStencil,
+		DXGI_FORMAT_D24_UNORM_S8_UINT);
+
+
 	// Setup the viewport
 	g_viewport.init(g_window);
 
@@ -241,26 +250,26 @@ HRESULT InitDevice()
 	g_CBBufferNeverChanges.init(g_device, sizeof(CBNeverChanges));
 
 	g_CBBufferChangeOnResize.init(g_device, sizeof(CBChangeOnResize));
-	
+
 	// Load the Texture
 	Texture Vela_Char_BaseColor;
 	Vela_Char_BaseColor.init(g_device, "Textures/Vela/Vela_Char_BaseColor.png", ExtensionType::PNG);
-	
+
 	Texture Vela_Corneas_BaseColor;
 	Vela_Corneas_BaseColor.init(g_device, "Textures/Vela/Vela_Corneas_BaseColor.png", ExtensionType::PNG);
-	
+
 	Texture Vela_Gun_BaseColor;
 	Vela_Gun_BaseColor.init(g_device, "Textures/Vela/Vela_Gun_BaseColor.png", ExtensionType::PNG);
-	
+
 	Texture Vela_Legs_BaseColor;
 	Vela_Legs_BaseColor.init(g_device, "Textures/Vela/Vela_Legs_BaseColor.png", ExtensionType::PNG);
 
 	Texture Vela_Mechanical_BaseColor;
 	Vela_Mechanical_BaseColor.init(g_device, "Textures/Vela/Vela_Mechanical_BaseColor.png", ExtensionType::PNG);
-	
+
 	Texture Vela_Plate_BaseColor;
 	Vela_Plate_BaseColor.init(g_device, "Textures/Vela/Vela_Plate_BaseColor.png", ExtensionType::PNG);
-	
+
 	Texture Vela_Visor_BaseColor;
 	Vela_Visor_BaseColor.init(g_device, "Textures/Vela/Vela_Visor_BaseColor.png", ExtensionType::PNG);
 
@@ -271,7 +280,7 @@ HRESULT InitDevice()
 	modelTextures.push_back(Vela_Mechanical_BaseColor); // 5
 	modelTextures.push_back(Vela_Char_BaseColor);				// 6
 	modelTextures.push_back(Vela_Plate_BaseColor);			// 7
-	
+
 	g_default.init(g_device, "Textures/Default.png", ExtensionType::PNG);
 
 	// Initialize the world matrices
@@ -283,7 +292,7 @@ HRESULT InitDevice()
 	XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	g_View = XMMatrixLookAtLH(Eye, At, Up);
 
-	
+
 	cbNeverChanges.mView = XMMatrixTranspose(g_View);
 
 	// Initialize the projection matrix
@@ -298,8 +307,8 @@ HRESULT InitDevice()
 
 	if (actor) {
 		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
-		
-		actor->getComponent<Transform>()->setPosition(Vector3f(-0.9f, -2.0f, 2.0f));
+
+			actor->getComponent<Transform>()->setPosition(Vector3f(-0.9f, -2.0f, 2.0f));
 		actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, 0.0f, XM_PI / 2.0f));
 		actor->getComponent<Transform>()->setScale(Vector3f(.03f, .03f, .03f));
 		actor->setMesh(g_device, g_model.meshes);
@@ -312,7 +321,7 @@ HRESULT InitDevice()
 	grid = std::make_shared<Actor>(g_device);
 	if (grid) {
 		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
-		std::vector<MeshComponent> gridMesh;
+			std::vector<MeshComponent> gridMesh;
 		gridMesh.push_back(MC);
 		grid->setMesh(g_device, gridMesh);
 		gridTexs.push_back(g_default);
@@ -323,11 +332,11 @@ HRESULT InitDevice()
 	else {
 		MESSAGE("Actor", "Actor", "Actor resource not found.")
 	}
-	
+
 	// Initialize User Interface
 	g_userInterface.init(g_window.m_hWnd,
-											 g_device.m_device,
-											 g_deviceContext.m_deviceContext);
+		g_device.m_device,
+		g_deviceContext.m_deviceContext);
 
 	return S_OK;
 }
@@ -390,7 +399,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 // Update everyFrame
-void Update(float DeltaTime) {
+void Update(double DeltaTime) {
 	g_userInterface.update();
 	bool show_demo_window = true;
 	ImGui::ShowDemoWindow(&show_demo_window);
@@ -453,7 +462,7 @@ void Update(float DeltaTime) {
 	// Actualizar info logica del mesh
 	actor->update(0, g_deviceContext);
 	grid->update(0, g_deviceContext);
-	actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, DeltaTime, XM_PI / 2.0f));
+	//actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, DeltaTime, XM_PI / 2.0f));
 }
 
 //--------------------------------------------------------------------------------------
@@ -494,7 +503,7 @@ void Render()
 	//	//g_deviceContext.m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//	//g_deviceContext.m_deviceContext->DrawIndexed(g_model.meshes[i].m_numIndex, 0, 0);
 	//}
-	
+
 	// Actualizar constant buffers
 	g_CBBufferNeverChanges.render(g_deviceContext, 0, 1);
 	g_CBBufferChangeOnResize.render(g_deviceContext, 1, 1);

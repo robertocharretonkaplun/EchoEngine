@@ -68,9 +68,21 @@ public:
 
   void
   toolTipData();
+
+  void 
+  ToolBar();
+
+  void 
+  closeApp();
+
+  void
+  RenderFullScreenTransparentWindow();
 private:
   bool checkboxValue = true;
   bool checkboxValue2 = false;
   std::vector<const char*> m_objectsNames;
   std::vector<const char*> m_tooltips;
+
+  bool show_exit_popup = false; // Variable de estado para el popup
+
 };

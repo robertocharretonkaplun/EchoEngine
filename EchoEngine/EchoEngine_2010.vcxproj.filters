@@ -131,6 +131,9 @@
     <ClInclude Include="include\Screenshot.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="include\EETimer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EchoEngine.cpp" />
@@ -207,6 +210,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="source\Screenshot.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EETimer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
