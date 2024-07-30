@@ -1,5 +1,6 @@
 #pragma once
 #include "PreRequisites.h"
+#include "Utilities/Vectors/Vector3.h"
 #include "UserInterface.h"
 #include "Component.h"
 
@@ -7,39 +8,39 @@
 class Transform : public Component {
 public:
   // Constructor que inicializa posición, rotación y escala por defecto
-  Transform() : position(), rotation(), scale(), matrix() {}
+  Transform() : position(), rotation(), scale(), matrix(), Component(ComponentType::TRANSFORM) {}
 
   // Métodos de acceso a los datos de posición
   // Retorna la posición actual
-  const Vector3f& 
+  const EngineUtilities::Vector3&
   getPosition() const { return position; }
 
   // Establece una nueva posición
   void 
-  setPosition(const Vector3f& newPos) { position = newPos; }
+  setPosition(const EngineUtilities::Vector3& newPos) { position = newPos; }
 
   // Métodos de acceso a los datos de rotación
   // Retorna la rotación actual
-  const Vector3f& 
+  const EngineUtilities::Vector3&
   getRotation() const { return rotation; }
 
   // Establece una nueva rotación
   void 
-  setRotation(const Vector3f& newRot) { rotation = newRot; }
+  setRotation(const EngineUtilities::Vector3& newRot) { rotation = newRot; }
 
   // Métodos de acceso a los datos de escala
   // Retorna la escala actual
-  const Vector3f& 
+  const EngineUtilities::Vector3&
   getScale() const { return scale; }
 
   // Establece una nueva escala
   void 
-  setScale(const Vector3f& newScale) { scale = newScale; }
+  setScale(const EngineUtilities::Vector3& newScale) { scale = newScale; }
 
   // Método para trasladar la posición del objeto
   // @param translation: Vector que representa la cantidad de traslado en cada eje
   void 
-  translate(const Vector3f& translation);
+  translate(const EngineUtilities::Vector3& translation);
 
   // Métodos para inicialización, actualización, renderizado y destrucción
   // Inicializa el objeto Transform
@@ -72,9 +73,9 @@ public:
   ui_noWindow(std::string wName);
 
 private:
-  Vector3f position;  // Posición del objeto
-  Vector3f rotation;  // Rotación del objeto
-  Vector3f scale;     // Escala del objeto
+  EngineUtilities::Vector3 position;  // Posición del objeto
+  EngineUtilities::Vector3 rotation;  // Rotación del objeto
+  EngineUtilities::Vector3 scale;     // Escala del objeto
   UserInterface UI;   // Interfaz de usuario para manipular el objeto
 
 public:

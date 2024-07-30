@@ -2,7 +2,7 @@
 #include "DeviceContext.h"
 
 void 
-Transform::translate(const Vector3f& translation) {
+Transform::translate(const EngineUtilities::Vector3& translation) {
   position = position + translation;
 }
 

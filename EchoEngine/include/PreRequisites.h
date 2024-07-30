@@ -5,7 +5,7 @@
 #include <vector>
 #include <windows.h>
 #include <xnamath.h>
-#include <memory>
+//#include <memory>
 #include <thread>
 
 // Librerias DirectX
@@ -15,6 +15,8 @@
 #include "resource.h"
 
 // Third Parties
+#include "Utilities/Memory/TSharedPointer.h"
+#include "Utilities/Memory/TWeakPointer.h"
 
 // MACRO for safe release of resources
 #define SAFE_RELEASE(x) if(x != nullptr) x->Release(); x = nullptr;
@@ -84,6 +86,7 @@ enum ExtensionType {
   JPG = 2
 };
 
+// DEPRECATED
 struct Mesh {
   std::string name;
   std::vector <SimpleVertex> vertex;
@@ -97,6 +100,8 @@ struct Mesh {
  * Inicialización uniforme: Inicializa los miembros directamente en la declaración, lo que asegura que siempre tendrán valores definidos.
  * Sobrecarga de operadores: Facilita operaciones aritméticas comunes con vectores (suma, resta, multiplicación y división).
  */
+
+/*
 struct Vector3f {
   // Constructor predeterminado
   // Inicializa los componentes del vector a 0
@@ -198,3 +203,5 @@ struct Vector4f {
     return Vector4f(x / scalar, y / scalar, z / scalar, w / scalar);
   }
 };
+
+*/

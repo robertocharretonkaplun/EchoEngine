@@ -42,7 +42,6 @@ Buffer															g_CBBufferChangeOnResize;
 ModelLoader													g_model;
 UserInterface												g_userInterface;
 
-XMMATRIX                            g_World;
 XMMATRIX                            g_View;
 XMMATRIX                            g_Projection;
 XMFLOAT4                            g_vMeshColor(0.7f, 0.7f, 0.7f, 1.0f);
@@ -52,8 +51,8 @@ std::vector<UINT> gridIndices;
 MeshComponent MC;
 //Mesh																g_mesh;
 
-std::shared_ptr<Actor> grid;
-std::shared_ptr<Actor> actor;
+EngineUtilities::TSharedPointer<Actor> grid;
+EngineUtilities::TSharedPointer<Actor> AVela;
 
 Texture g_default;
 std::vector<Texture> modelTextures;
@@ -283,8 +282,6 @@ HRESULT InitDevice()
 
 	g_default.init(g_device, "Textures/Default.png", ExtensionType::PNG);
 
-	// Initialize the world matrices
-	g_World = XMMatrixIdentity();
 
 	// Initialize the view matrix
 	XMVECTOR Eye = XMVectorSet(0.0f, 3.0f, -6.0f, 0.0f);
@@ -296,38 +293,39 @@ HRESULT InitDevice()
 	cbNeverChanges.mView = XMMatrixTranspose(g_View);
 
 	// Initialize the projection matrix
-	g_Projection = XMMatrixPerspectiveFovLH(XM_PIDIV4, g_window.m_width / (FLOAT)g_window.m_height, 0.01f, 100.0f);
+	g_Projection = XMMatrixPerspectiveFovLH(XM_PIDIV4, 
+																					g_window.m_width / (FLOAT)g_window.m_height, 
+																					0.01f, 
+																					100.0f);
 
 	cbChangesOnResize.mProjection = XMMatrixTranspose(g_Projection);
 
 	// Set Vela Actor
-	actor = std::make_shared<Actor>(g_device);
-	// Obtener el componente Transform del Actor
-	std::shared_ptr<Transform> transform = actor->getComponent<Transform>();
+	AVela = EngineUtilities::MakeShared<Actor>(g_device);
 
-	if (actor) {
+	if (!AVela.isNull()) {
 		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
 
-			actor->getComponent<Transform>()->setPosition(Vector3f(-0.9f, -2.0f, 2.0f));
-		actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, 0.0f, XM_PI / 2.0f));
-		actor->getComponent<Transform>()->setScale(Vector3f(.03f, .03f, .03f));
-		actor->setMesh(g_device, g_model.meshes);
-		actor->setTextures(modelTextures);
+		AVela->getComponent<Transform>()->setPosition(EngineUtilities::Vector3(-0.9f, -2.0f, 2.0f));
+		AVela->getComponent<Transform>()->setRotation(EngineUtilities::Vector3(XM_PI / -2.0f, 0.0f, XM_PI / 2.0f));
+		AVela->getComponent<Transform>()->setScale(EngineUtilities::Vector3(.03f, .03f, .03f));
+		AVela->setMesh(g_device, g_model.meshes);
+		AVela->setTextures(modelTextures);
 	}
 	else {
 		MESSAGE("Actor", "Actor", "Actor resource not found.")
 	}
 
-	grid = std::make_shared<Actor>(g_device);
-	if (grid) {
+	grid = EngineUtilities::MakeShared<Actor>(g_device);
+	if (!grid.isNull()) {
 		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
 			std::vector<MeshComponent> gridMesh;
 		gridMesh.push_back(MC);
 		grid->setMesh(g_device, gridMesh);
 		gridTexs.push_back(g_default);
 		grid->setTextures(gridTexs);
-		grid->getComponent<Transform>()->setPosition(Vector3f(0.0f, -2.0f, 0.0f));
-		grid->getComponent<Transform>()->setScale(Vector3f(.03f, .03f, .03f));
+		grid->getComponent<Transform>()->setPosition(EngineUtilities::Vector3(0.0f, -2.0f, 0.0f));
+		grid->getComponent<Transform>()->setScale(EngineUtilities::Vector3(.03f, .03f, .03f));
 	}
 	else {
 		MESSAGE("Actor", "Actor", "Actor resource not found.")
@@ -349,7 +347,7 @@ void CleanupDevice()
 {
 	if (g_deviceContext.m_deviceContext) g_deviceContext.m_deviceContext->ClearState();
 
-	actor->destroy();
+	AVela->destroy();
 	grid->destroy();
 
 	//g_default.destroy();
@@ -403,7 +401,7 @@ void Update(double DeltaTime) {
 	g_userInterface.update();
 	bool show_demo_window = true;
 	ImGui::ShowDemoWindow(&show_demo_window);
-	//g_userInterface.vec3Control("Transform", actor->getComponent<Transform>()->getPosition().data());
+	//g_userInterface.vec3Control("Transform", AVela->getComponent<Transform>()->getPosition().data());
 	ImGui::Begin("Inspector");
 	// Checkbox para Static
 	bool isStatic = false;
@@ -439,7 +437,7 @@ void Update(double DeltaTime) {
 
 	ImGui::Separator();
 
-	actor->getComponent<Transform>()->ui_noWindow("Transform");
+	AVela->getComponent<Transform>()->ui_noWindow("Transform");
 	ImGui::Separator();
 	grid->getComponent<Transform>()->ui_noWindow("Grid Transform");
 
@@ -460,11 +458,11 @@ void Update(double DeltaTime) {
 	g_CBBufferChangeOnResize.update(g_deviceContext, 0, nullptr, &cbChangesOnResize, 0, 0);
 
 	// Actualizar info logica del mesh
-	actor->update(0, g_deviceContext);
+	AVela->update(0, g_deviceContext);
 	grid->update(0, g_deviceContext);
-	//Vector3f translation(0.0f, 0.0f, DeltaTime);
-	//actor->getComponent<Transform>()->translate(translation);
-	//actor->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, DeltaTime, XM_PI / 2.0f));
+	//EngineUtilities::Vector3 translation(0.0f, 0.0f, DeltaTime);
+	//AVela->getComponent<Transform>()->translate(translation);
+	//AVela->getComponent<Transform>()->setRotation(Vector3f(XM_PI / -2.0f, DeltaTime, XM_PI / 2.0f));
 }
 
 //--------------------------------------------------------------------------------------
@@ -485,7 +483,7 @@ void Render()
 	g_shaderProgram.render(g_deviceContext);
 
 	// Render the models
-	actor->render(g_deviceContext);
+	AVela->render(g_deviceContext);
 	grid->render(g_deviceContext);
 
 	//for (size_t i = 0; i < 7; i++) {

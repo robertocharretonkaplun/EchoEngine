@@ -33,6 +33,24 @@
     <Filter Include="imgui\source">
       <UniqueIdentifier>{eff40d13-88db-48aa-bb1a-43e8dea28293}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include\Utilities">
+      <UniqueIdentifier>{16da1acd-25b0-4f44-9b96-6dcdf83163ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\Utilities\Vectors">
+      <UniqueIdentifier>{e258e3f8-3103-447f-abcd-8a6008b9c647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\Utilities\Matrix">
+      <UniqueIdentifier>{7b193c3e-927e-4c7d-9703-93fef7bb31b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\Utilities\Utilities">
+      <UniqueIdentifier>{cf874e19-7297-4ce9-a5e7-53cdf2b8b62f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\Utilities\Structures">
+      <UniqueIdentifier>{ac3ca643-e05f-4902-9ef4-36b68409c716}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\Utilities\Memory">
+      <UniqueIdentifier>{92da9b23-5930-4526-8480-09d8c39d6703}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BaseApp.h">
@@ -133,6 +151,54 @@
     </ClInclude>
     <ClInclude Include="include\EETimer.h">
       <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Vectors\Quaternion.h">
+      <Filter>Include\Utilities\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Vectors\Vector2.h">
+      <Filter>Include\Utilities\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Vectors\Vector3.h">
+      <Filter>Include\Utilities\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Vectors\Vector4.h">
+      <Filter>Include\Utilities\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Matrix\Matrix2x2.h">
+      <Filter>Include\Utilities\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Matrix\Matrix3x3.h">
+      <Filter>Include\Utilities\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Matrix\Matrix4x4.h">
+      <Filter>Include\Utilities\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Utilities\EngineMath.h">
+      <Filter>Include\Utilities\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Structures\TArray.h">
+      <Filter>Include\Utilities\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Structures\TMap.h">
+      <Filter>Include\Utilities\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Structures\TPair.h">
+      <Filter>Include\Utilities\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Structures\TSet.h">
+      <Filter>Include\Utilities\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Memory\TSharedPointer.h">
+      <Filter>Include\Utilities\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Memory\TStaticPtr.h">
+      <Filter>Include\Utilities\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Memory\TUniquePtr.h">
+      <Filter>Include\Utilities\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Memory\TWeakPointer.h">
+      <Filter>Include\Utilities\Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
