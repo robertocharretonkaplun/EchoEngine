@@ -252,25 +252,39 @@ HRESULT InitDevice()
 
 	// Load the Texture
 	Texture Vela_Char_BaseColor;
-	Vela_Char_BaseColor.init(g_device, "Textures/Vela/Vela_Char_BaseColor.png", ExtensionType::PNG);
+	Vela_Char_BaseColor.init(g_device, 
+													 "Textures/Vela/Vela_Char_BaseColor.png", 
+													 ExtensionType::PNG);
 
 	Texture Vela_Corneas_BaseColor;
-	Vela_Corneas_BaseColor.init(g_device, "Textures/Vela/Vela_Corneas_BaseColor.png", ExtensionType::PNG);
+	Vela_Corneas_BaseColor.init(g_device,
+															"Textures/Vela/Vela_Corneas_BaseColor.png",
+															ExtensionType::PNG);
 
 	Texture Vela_Gun_BaseColor;
-	Vela_Gun_BaseColor.init(g_device, "Textures/Vela/Vela_Gun_BaseColor.png", ExtensionType::PNG);
+	Vela_Gun_BaseColor.init(g_device, 
+													"Textures/Vela/Vela_Gun_BaseColor.png",
+													ExtensionType::PNG);
 
 	Texture Vela_Legs_BaseColor;
-	Vela_Legs_BaseColor.init(g_device, "Textures/Vela/Vela_Legs_BaseColor.png", ExtensionType::PNG);
+	Vela_Legs_BaseColor.init(g_device,
+													 "Textures/Vela/Vela_Legs_BaseColor.png",
+													 ExtensionType::PNG);
 
 	Texture Vela_Mechanical_BaseColor;
-	Vela_Mechanical_BaseColor.init(g_device, "Textures/Vela/Vela_Mechanical_BaseColor.png", ExtensionType::PNG);
+	Vela_Mechanical_BaseColor.init(g_device, 
+																 "Textures/Vela/Vela_Mechanical_BaseColor.png", 
+																 ExtensionType::PNG);
 
 	Texture Vela_Plate_BaseColor;
-	Vela_Plate_BaseColor.init(g_device, "Textures/Vela/Vela_Plate_BaseColor.png", ExtensionType::PNG);
+	Vela_Plate_BaseColor.init(g_device, 
+														"Textures/Vela/Vela_Plate_BaseColor.png", 
+														ExtensionType::PNG);
 
 	Texture Vela_Visor_BaseColor;
-	Vela_Visor_BaseColor.init(g_device, "Textures/Vela/Vela_Visor_BaseColor.png", ExtensionType::PNG);
+	Vela_Visor_BaseColor.init(g_device, 
+														"Textures/Vela/Vela_Visor_BaseColor.png", 
+														ExtensionType::PNG);
 
 	modelTextures.push_back(Vela_Corneas_BaseColor);		// 1 
 	modelTextures.push_back(Vela_Gun_BaseColor);				// 2
@@ -306,9 +320,15 @@ HRESULT InitDevice()
 	if (!AVela.isNull()) {
 		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
 
-		AVela->getComponent<Transform>()->setPosition(EngineUtilities::Vector3(-0.9f, -2.0f, 2.0f));
-		AVela->getComponent<Transform>()->setRotation(EngineUtilities::Vector3(XM_PI / -2.0f, 0.0f, XM_PI / 2.0f));
-		AVela->getComponent<Transform>()->setScale(EngineUtilities::Vector3(.03f, .03f, .03f));
+		AVela->getComponent<Transform>()->setPosition(EngineUtilities::Vector3(-0.9f, 
+																																					 -2.0f, 
+																																					 2.0f));
+		AVela->getComponent<Transform>()->setRotation(EngineUtilities::Vector3(XM_PI / -2.0f, 
+																																					 0.0f, 
+																																					 XM_PI / 2.0f));
+		AVela->getComponent<Transform>()->setScale(EngineUtilities::Vector3(.03f, 
+																																				.03f, 
+																																				.03f));
 		AVela->setMesh(g_device, g_model.meshes);
 		AVela->setTextures(modelTextures);
 	}
@@ -319,13 +339,17 @@ HRESULT InitDevice()
 	grid = EngineUtilities::MakeShared<Actor>(g_device);
 	if (!grid.isNull()) {
 		MESSAGE("Actor", "Actor", "Actor accessed successfully.")
-			std::vector<MeshComponent> gridMesh;
+		std::vector<MeshComponent> gridMesh;
 		gridMesh.push_back(MC);
 		grid->setMesh(g_device, gridMesh);
 		gridTexs.push_back(g_default);
 		grid->setTextures(gridTexs);
-		grid->getComponent<Transform>()->setPosition(EngineUtilities::Vector3(0.0f, -2.0f, 0.0f));
-		grid->getComponent<Transform>()->setScale(EngineUtilities::Vector3(.03f, .03f, .03f));
+		grid->getComponent<Transform>()->setPosition(EngineUtilities::Vector3(0.0f, 
+																																					-2.0f, 
+																																					0.0f));
+		grid->getComponent<Transform>()->setScale(EngineUtilities::Vector3(.03f, 
+																																			 .03f, 
+																																			 .03f));
 	}
 	else {
 		MESSAGE("Actor", "Actor", "Actor resource not found.")
@@ -450,7 +474,6 @@ void Update(double DeltaTime) {
 			ImGui::SameLine();
 		}
 	}
-
 
 	ImGui::End();
 	// Update constant Buffers
