@@ -1,10 +1,10 @@
 #include "Window.h"
 
-HRESULT 
+HRESULT
 Window::init(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc) {
 	m_hInst = hInstance;
 	// Register class
-	WNDCLASSEX wcex;
+	WNDCLASSEX wcex = {};
 	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc = wndproc;
@@ -16,29 +16,35 @@ Window::init(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc) {
 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wcex.lpszMenuName = nullptr;
 	wcex.lpszClassName = "TutorialWindowClass";
-	wcex.hIconSm = LoadIcon(wcex.hInstance, (LPCTSTR)IDI_TUTORIAL1);
+	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_TUTORIAL1));
 	if (!RegisterClassEx(&wcex))
+	{
+		MessageBox(nullptr, "RegisterClassEx failed!", "Error", MB_OK);
 		return E_FAIL;
+	}
 
 	// Create window
-	RECT rc = { 0, 0, 1200 , 1010};
+	RECT rc = { 0, 0, 1200 , 1010 };
 	m_rect = rc;
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
-	m_hWnd = CreateWindow("TutorialWindowClass", 
+	m_hWnd = CreateWindow("TutorialWindowClass",
 												m_windowName.c_str(),
 												WS_OVERLAPPEDWINDOW,
-												CW_USEDEFAULT, 
-												CW_USEDEFAULT, 
-												m_rect.right -  m_rect.left, 
-												m_rect.bottom - m_rect.top, 
-												nullptr, 
-												nullptr, 
+												CW_USEDEFAULT,
+												CW_USEDEFAULT,
+												m_rect.right - m_rect.left,
+												m_rect.bottom - m_rect.top,
+												nullptr,
+												nullptr,
 												m_hInst,
 												nullptr);
-	if (!m_hWnd)
+	if (!m_hWnd) {
+		MessageBox(nullptr, "CreateWindow failed!", "Error", MB_OK);
 		return E_FAIL;
+	}
 
 	ShowWindow(m_hWnd, nCmdShow);
+	UpdateWindow(m_hWnd);
 
 	GetClientRect(m_hWnd, &m_rect);
 	m_width = m_rect.right - m_rect.left;
@@ -46,14 +52,14 @@ Window::init(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc) {
 	return S_OK;
 }
 
-void 
+void
 Window::update() {
 }
 
-void 
+void
 Window::render() {
 }
 
-void 
+void
 Window::destroy() {
 }

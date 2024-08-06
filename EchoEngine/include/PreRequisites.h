@@ -52,6 +52,8 @@ OutputDebugStringA("\n");
    exit(1);                                  \
 }
 
+
+
 // Structures
 struct 
 SimpleVertex {

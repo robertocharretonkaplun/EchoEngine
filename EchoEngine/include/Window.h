@@ -1,6 +1,5 @@
 #pragma once
 #include "PreRequisites.h"
-
 class 
 Window {
 public:
