@@ -28,8 +28,9 @@
 */
 #pragma once
 
-#include "Utilities/EngineMath.h"
-namespace EngineUtilities {
+#include "Utilities/Utilities/EngineMath.h"
+namespace 
+EngineUtilities {
   /**
  * @brief A 4D vector class.
  *
@@ -37,7 +38,8 @@ namespace EngineUtilities {
  * basic vector operations such as addition, subtraction, scalar multiplication,
  * and normalization.
  */
-  class Vector4 {
+  class 
+  Vector4 {
   public:
     float x; /**< The x-coordinate of the vector. */
     float y; /**< The y-coordinate of the vector. */
@@ -69,7 +71,8 @@ namespace EngineUtilities {
      * @param other The vector to add.
      * @return The result of the addition.
      */
-    Vector4 operator+(const Vector4& other) const {
+    Vector4 
+    operator+(const Vector4& other) const {
       return Vector4(x + other.x, y + other.y, z + other.z, w + other.w);
     }
 
@@ -79,7 +82,8 @@ namespace EngineUtilities {
      * @param other The vector to subtract.
      * @return The result of the subtraction.
      */
-    Vector4 operator-(const Vector4& other) const {
+    Vector4 
+    operator-(const Vector4& other) const {
       return Vector4(x - other.x, y - other.y, z - other.z, w - other.w);
     }
 
@@ -89,7 +93,8 @@ namespace EngineUtilities {
      * @param scalar The scalar to multiply by.
      * @return The result of the multiplication.
      */
-    Vector4 operator*(float scalar) const {
+    Vector4 
+    operator*(float scalar) const {
       return Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
     }
 
@@ -98,7 +103,8 @@ namespace EngineUtilities {
      *
      * @return The magnitude of the vector.
      */
-    float magnitude() const {
+    float 
+    magnitude() const {
       return EngineUtilities::sqrt(x * x + y * y + z * z + w * w);
     }
 
@@ -107,7 +113,8 @@ namespace EngineUtilities {
      *
      * @return The normalized vector.
      */
-    Vector4 normalize() const {
+    Vector4 
+    normalize() const {
       float mag = magnitude();
       if (mag == 0) {
         return Vector4(0, 0, 0, 0);

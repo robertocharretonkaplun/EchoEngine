@@ -29,7 +29,8 @@
 #pragma once
 #include "TSharedPointer.h"
 
-namespace EngineUtilities {
+namespace 
+EngineUtilities {
 	/**
 		 * @brief Clase TWeakPointer para observar objetos gestionados por TSharedPointer sin aumentar el recuento de referencias.
 		 *
@@ -38,8 +39,7 @@ namespace EngineUtilities {
 		 * aún existe.
 		 */
 	template<typename T>
-	class TWeakPointer
-	{
+	class TWeakPointer {
 	public:
 		/**
 		 * @brief Constructor por defecto.
@@ -59,10 +59,9 @@ namespace EngineUtilities {
 		 *
 		 * @return Un TSharedPointer al objeto gestionado, o nullptr si el objeto ha sido destruido.
 		 */
-		TSharedPointer<T> lock() const
-		{
-			if (refCount && *refCount > 0)
-			{
+		TSharedPointer<T> 
+		lock() const {
+			if (refCount && *refCount > 0) {
 				return TSharedPointer<T>(ptr, refCount);
 			}
 			return TSharedPointer<T>();

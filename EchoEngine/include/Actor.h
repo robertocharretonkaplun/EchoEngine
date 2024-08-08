@@ -44,7 +44,8 @@ class MeshComponent;
  * La clase Actor hereda de Entity y representa un objeto en el juego que puede tener mallas,
  * texturas y varios componentes. Proporciona métodos para actualizar, renderizar y destruir el actor.
  */
-class Actor : public Entity {
+class 
+Actor : public Entity {
 public:
   /**
    * @brief Constructor por defecto.
@@ -60,25 +61,29 @@ public:
   /**
    * @brief Destructor virtual.
    */
-  virtual ~Actor() = default;
+  virtual 
+  ~Actor() = default;
 
   /**
    * @brief Actualiza el actor.
    * @param deltaTime El tiempo transcurrido desde la última actualización.
    * @param deviceContext Contexto del dispositivo para operaciones gráficas.
    */
-  void update(float deltaTime, DeviceContext deviceContext) override;
+  void 
+  update(float deltaTime, DeviceContext deviceContext) override;
 
   /**
    * @brief Renderiza el actor.
    * @param deviceContext Contexto del dispositivo para operaciones gráficas.
    */
-  void render(DeviceContext deviceContext) override;
+  void 
+  render(DeviceContext deviceContext) override;
 
   /**
    * @brief Destruye el actor y libera los recursos asociados.
    */
-  void destroy();
+  void 
+  destroy();
 
   /**
    * @brief Obtiene un componente específico del actor.
@@ -93,19 +98,22 @@ public:
    * @param device El dispositivo con el cual se inicializan las mallas.
    * @param meshes Vector de componentes de malla que se van a establecer.
    */
-  void setMesh(Device device, std::vector<MeshComponent> meshes);
+  void 
+  setMesh(Device device, std::vector<MeshComponent> meshes);
 
   /**
    * @brief Establece las texturas del actor.
    * @param textures Vector de texturas que se van a establecer.
    */
-  void setTextures(std::vector<Texture> textures);
+  void 
+  setTextures(std::vector<Texture> textures);
 
   /**
    * @brief Obtiene el nombre del actor.
    * @return El nombre del actor.
    */
-  std::string getName() { return m_name; }
+  std::string 
+  getName() { return m_name; }
 
 private:
   std::vector<MeshComponent> m_meshes; ///< Vector de componentes de malla.

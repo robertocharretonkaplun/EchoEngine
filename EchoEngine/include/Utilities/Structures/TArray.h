@@ -28,7 +28,8 @@
 */
 
 #pragma once
-namespace EngineUtilities {
+namespace 
+EngineUtilities {
 	/**
 	 * @brief TArray es una clase de array dinámica para almacenar elementos de tipo T.
 	 *
@@ -39,8 +40,8 @@ namespace EngineUtilities {
 	 * @tparam T El tipo de elementos almacenados en el array.
 	 */
 	template<typename T>
-	class TArray
-	{
+	class 
+	TArray {
 	private:
 		T* Data;           ///< Puntero a la memoria donde se almacenan los elementos del array.
 		size_t Capacity;   ///< Capacidad actual del array (número de elementos que puede almacenar).
@@ -51,11 +52,10 @@ namespace EngineUtilities {
 		 *
 		 * @param NewCapacity La nueva capacidad del array.
 		 */
-		void Resize(size_t NewCapacity)
-		{
+		void 
+		Resize(size_t NewCapacity) {
 			T* NewData = new T[NewCapacity];  ///< Crear un nuevo bloque de memoria con la nueva capacidad.
-			for (size_t i = 0; i < Size; ++i)
-			{
+			for (size_t i = 0; i < Size; ++i)	{
 				NewData[i] = Data[i];  ///< Copiar los elementos existentes al nuevo bloque de memoria.
 			}
 			delete[] Data;  ///< Liberar la memoria del array antiguo.
@@ -81,10 +81,9 @@ namespace EngineUtilities {
 		 *
 		 * @param Element El elemento a añadir al array.
 		 */
-		void Add(const T& Element)
-		{
-			if (Size == Capacity)
-			{
+		void 
+		Add(const T& Element) {
+			if (Size == Capacity)	{
 				Resize(Capacity == 0 ? 1 : Capacity * 2);  ///< Redimensionar si es necesario.
 			}
 			Data[Size++] = Element;  ///< Añadir el nuevo elemento y aumentar el tamaño.
@@ -95,15 +94,13 @@ namespace EngineUtilities {
 		 *
 		 * @param Index La posición del elemento a eliminar.
 		 */
-		void RemoveAt(size_t Index)
-		{
-			if (Index >= Size)
-			{
+		void 
+		RemoveAt(size_t Index) {
+			if (Index >= Size) {
 				std::cerr << "Index out of range" << std::endl;  ///< Manejar el caso de índice fuera de rango.
 				return;
 			}
-			for (size_t i = Index; i < Size - 1; ++i)
-			{
+			for (size_t i = Index; i < Size - 1; ++i)	{
 				Data[i] = Data[i + 1];  ///< Desplazar los elementos hacia la izquierda para llenar el hueco.
 			}
 			--Size;  ///< Disminuir el tamaño del array.
@@ -115,10 +112,9 @@ namespace EngineUtilities {
 		 * @param Index La posición del elemento a acceder.
 		 * @return Referencia al elemento en la posición especificada.
 		 */
-		T& operator[](size_t Index)
-		{
-			if (Index >= Size)
-			{
+		T& 
+		operator[](size_t Index) {
+			if (Index >= Size) {
 				std::cerr << "Index out of range" << std::endl;  ///< Manejar el caso de índice fuera de rango.
 				exit(1);  ///< Salir del programa en caso de error.
 			}
@@ -131,10 +127,9 @@ namespace EngineUtilities {
 		 * @param Index La posición del elemento a acceder.
 		 * @return Referencia constante al elemento en la posición especificada.
 		 */
-		const T& operator[](size_t Index) const
-		{
-			if (Index >= Size)
-			{
+		const T& 
+		operator[](size_t Index) const {
+			if (Index >= Size) {
 				std::cerr << "Index out of range" << std::endl;  ///< Manejar el caso de índice fuera de rango.
 				exit(1);  ///< Salir del programa en caso de error.
 			}
@@ -146,8 +141,8 @@ namespace EngineUtilities {
 		 *
 		 * @return El número de elementos en el array.
 		 */
-		size_t Num() const
-		{
+		size_t 
+		Num() const {
 			return Size;  ///< Devolver el tamaño actual del array.
 		}
 
@@ -156,8 +151,8 @@ namespace EngineUtilities {
 		 *
 		 * @return La capacidad del array.
 		 */
-		size_t GetCapacity() const
-		{
+		size_t 
+		GetCapacity() const {
 			return Capacity;  ///< Devolver la capacidad actual del array.
 		}
 	};

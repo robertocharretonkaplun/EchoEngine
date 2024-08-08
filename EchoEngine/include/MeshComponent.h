@@ -38,7 +38,8 @@
  * La clase MeshComponent hereda de Component y representa una malla con vértices e índices,
  * permitiendo su actualización y renderizado.
  */
-class MeshComponent : public Component {
+class 
+MeshComponent : public Component {
 public:
   /**
    * @brief Constructor por defecto.
@@ -50,19 +51,22 @@ public:
   /**
    * @brief Destructor virtual.
    */
-  virtual ~MeshComponent() = default;
+  virtual 
+  ~MeshComponent() = default;
 
   /**
    * @brief Actualiza el componente de malla.
    * @param deltaTime El tiempo transcurrido desde la última actualización.
    */
-  void update(float deltaTime) override {}
+  void 
+  update(float deltaTime) override {}
 
   /**
    * @brief Renderiza el componente de malla.
    * @param deviceContext Contexto del dispositivo para operaciones gráficas.
    */
-  void render(DeviceContext deviceContext) override {}
+  void 
+  render(DeviceContext deviceContext) override {}
 
 public:
   std::string m_name; ///< Nombre de la malla.

@@ -27,7 +27,8 @@
  * SOFTWARE.
 */
 #pragma once
-namespace EngineUtilities {
+namespace 
+EngineUtilities {
 	/**
 	 * @brief TMap es una clase de mapa (diccionario) dinámica para almacenar pares clave-valor.
 	 *
@@ -39,11 +40,11 @@ namespace EngineUtilities {
 	 * @tparam V El tipo de los valores.
 	 */
 	template<typename K, typename V>
-	class TMap
-	{
+	class 
+	TMap {
 	private:
-		struct Pair
-		{
+		struct 
+		Pair {
 			K Key;
 			V Value;
 
@@ -60,11 +61,10 @@ namespace EngineUtilities {
 		 *
 		 * @param NewCapacity La nueva capacidad del mapa.
 		 */
-		void Resize(size_t NewCapacity)
-		{
+		void 
+		Resize(size_t NewCapacity) {
 			Pair* NewData = new Pair[NewCapacity];  ///< Crear un nuevo bloque de memoria con la nueva capacidad.
-			for (size_t i = 0; i < Size; ++i)
-			{
+			for (size_t i = 0; i < Size; ++i)	{
 				NewData[i] = Data[i];  ///< Copiar los pares existentes al nuevo bloque de memoria.
 			}
 			delete[] Data;  ///< Liberar la memoria del mapa antiguo.
@@ -76,16 +76,12 @@ namespace EngineUtilities {
 		/**
 		 * @brief Constructor por defecto que inicializa el mapa con capacidad y tamaño cero.
 		 */
-		TMap()
-			: Data(nullptr), Capacity(0), Size(0)
-		{
-		}
+		TMap() : Data(nullptr), Capacity(0), Size(0){}
 
 		/**
 		 * @brief Destructor que libera la memoria asignada al mapa.
 		 */
-		~TMap()
-		{
+		~TMap() {
 			delete[] Data;  ///< Liberar la memoria del mapa.
 		}
 
@@ -95,18 +91,15 @@ namespace EngineUtilities {
 		 * @param Key La clave del nuevo par.
 		 * @param Value El valor del nuevo par.
 		 */
-		void Add(const K& Key, const V& Value)
-		{
-			for (size_t i = 0; i < Size; ++i)
-			{
-				if (Data[i].Key == Key)
-				{
+		void 
+		Add(const K& Key, const V& Value)	{
+			for (size_t i = 0; i < Size; ++i)	{
+				if (Data[i].Key == Key)	{
 					Data[i].Value = Value;  ///< Actualizar el valor si la clave ya existe.
 					return;
 				}
 			}
-			if (Size == Capacity)
-			{
+			if (Size == Capacity)	{
 				Resize(Capacity == 0 ? 1 : Capacity * 2);  ///< Redimensionar si es necesario.
 			}
 			Data[Size++] = Pair(Key, Value);  ///< Añadir el nuevo par y aumentar el tamaño.
@@ -117,14 +110,11 @@ namespace EngineUtilities {
 		 *
 		 * @param Key La clave del par a eliminar.
 		 */
-		void Remove(const K& Key)
-		{
-			for (size_t i = 0; i < Size; ++i)
-			{
-				if (Data[i].Key == Key)
-				{
-					for (size_t j = i; j < Size - 1; ++j)
-					{
+		void 
+		Remove(const K& Key) {
+			for (size_t i = 0; i < Size; ++i)	{
+				if (Data[i].Key == Key)	{
+					for (size_t j = i; j < Size - 1; ++j)	{
 						Data[j] = Data[j + 1];  ///< Desplazar los pares hacia la izquierda para llenar el hueco.
 					}
 					--Size;  ///< Disminuir el tamaño del mapa.
@@ -140,12 +130,10 @@ namespace EngineUtilities {
 		 * @param Key La clave del valor a acceder.
 		 * @return Referencia al valor asociado con la clave especificada.
 		 */
-		V& operator[](const K& Key)
-		{
-			for (size_t i = 0; i < Size; ++i)
-			{
-				if (Data[i].Key == Key)
-				{
+		V& 
+		operator[](const K& Key) {
+			for (size_t i = 0; i < Size; ++i)	{
+				if (Data[i].Key == Key)	{
 					return Data[i].Value;  ///< Devolver el valor si la clave se encuentra.
 				}
 			}
@@ -159,12 +147,10 @@ namespace EngineUtilities {
 		 * @param Key La clave del valor a acceder.
 		 * @return Referencia constante al valor asociado con la clave especificada.
 		 */
-		const V& operator[](const K& Key) const
-		{
-			for (size_t i = 0; i < Size; ++i)
-			{
-				if (Data[i].Key == Key)
-				{
+		const V& 
+		operator[](const K& Key) const {
+			for (size_t i = 0; i < Size; ++i)	{
+				if (Data[i].Key == Key)	{
 					return Data[i].Value;  ///< Devolver el valor si la clave se encuentra.
 				}
 			}
@@ -177,8 +163,8 @@ namespace EngineUtilities {
 		 *
 		 * @return El número de pares en el mapa.
 		 */
-		size_t Num() const
-		{
+		size_t 
+		Num() const	{
 			return Size;  ///< Devolver el tamaño actual del mapa.
 		}
 
@@ -187,8 +173,8 @@ namespace EngineUtilities {
 		 *
 		 * @return La capacidad del mapa.
 		 */
-		size_t GetCapacity() const
-		{
+		size_t 
+		GetCapacity() const {
 			return Capacity;  ///< Devolver la capacidad actual del mapa.
 		}
 	};

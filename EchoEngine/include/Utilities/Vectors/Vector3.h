@@ -28,7 +28,8 @@
 */
 #pragma once
 #include "Utilities/Utilities/EngineMath.h"
-namespace EngineUtilities {
+namespace 
+EngineUtilities {
   /**
  * @brief A 3D vector class.
  *
@@ -66,7 +67,8 @@ namespace EngineUtilities {
      * @param other The vector to add.
      * @return The result of the addition.
      */
-    Vector3 operator+(const Vector3& other) const {
+    Vector3 
+    operator+(const Vector3& other) const {
       return Vector3(x + other.x, y + other.y, z + other.z);
     }
 
@@ -76,7 +78,8 @@ namespace EngineUtilities {
      * @param other The vector to subtract.
      * @return The result of the subtraction.
      */
-    Vector3 operator-(const Vector3& other) const {
+    Vector3 
+    operator-(const Vector3& other) const {
       return Vector3(x - other.x, y - other.y, z - other.z);
     }
 
@@ -86,7 +89,8 @@ namespace EngineUtilities {
      * @param scalar The scalar to multiply by.
      * @return The result of the multiplication.
      */
-    Vector3 operator*(float scalar) const {
+    Vector3 
+    operator*(float scalar) const {
       return Vector3(x * scalar, y * scalar, z * scalar);
     }
 
@@ -95,7 +99,8 @@ namespace EngineUtilities {
      *
      * @return The magnitude of the vector.
      */
-    float magnitude() const {
+    float 
+    magnitude() const {
       return EngineUtilities::sqrt(x * x + y * y + z * z);
     }
 
@@ -104,7 +109,8 @@ namespace EngineUtilities {
      *
      * @return The normalized vector.
      */
-    Vector3 normalize() const {
+    Vector3 
+    normalize() const {
       float mag = magnitude();
       if (mag == 0) {
         return Vector3(0, 0, 0);
@@ -114,7 +120,10 @@ namespace EngineUtilities {
 
     // Método para obtener un puntero a los datos como un arreglo
     // @return: Puntero a los componentes del vector
-    float* data() { return &x; }
-    const float* data() const { return &x; }
+    float* 
+    data() { return &x; }
+
+    const float* 
+    data() const { return &x; }
   };
 }

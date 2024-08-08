@@ -27,7 +27,8 @@
  * SOFTWARE.
 */
 #pragma once
-namespace EngineUtilities {
+namespace 
+EngineUtilities {
 
   // Constantes matemáticas
   constexpr float PI = 3.14159265358979323846f;
@@ -39,7 +40,8 @@ namespace EngineUtilities {
 		 * @param value The value to compute the square root of.
 		 * @return The computed square root.
 		 */
-	inline float sqrt(float value) {
+	inline float 
+  sqrt(float value) {
 		if (value < 0) {
 			return 0; // Handle negative input gracefully.
 		}
@@ -59,7 +61,8 @@ namespace EngineUtilities {
    * @param value El valor del cual se desea calcular el cuadrado.
    * @return El cuadrado del valor dado.
    */
-  inline float square(float value) {
+  inline float 
+  square(float value) {
     return value * value;
   }
 
@@ -69,7 +72,8 @@ namespace EngineUtilities {
    * @param value El valor del cual se desea calcular el cubo.
    * @return El cubo del valor dado.
    */
-  inline float cube(float value) {
+  inline float 
+  cube(float value) {
     return value * value * value;
   }
 
@@ -80,7 +84,8 @@ namespace EngineUtilities {
    * @param exponent El exponente al que se eleva la base.
    * @return La base elevada al exponente.
    */
-  inline float power(float base, int exponent) {
+  inline float 
+  power(float base, int exponent) {
     if (exponent == 0) return 1;
     if (exponent < 0) return 1.0f / power(base, -exponent);
     float result = 1;
@@ -98,7 +103,8 @@ namespace EngineUtilities {
    * @param value El valor del cual se desea calcular el valor absoluto.
    * @return El valor absoluto del valor dado.
    */
-  inline float abs(float value) {
+  inline float 
+  abs(float value) {
     return (value < 0) ? -value : value;
   }
 
@@ -109,7 +115,8 @@ namespace EngineUtilities {
    * @param b El segundo valor.
    * @return El mayor de los dos valores dados.
    */
-  inline float EMax(float a, float b) {
+  inline float 
+  EMax(float a, float b) {
     return (a > b) ? a : b;
   }
 
@@ -120,7 +127,8 @@ namespace EngineUtilities {
    * @param b El segundo valor.
    * @return El menor de los dos valores dados.
    */
-  inline float EMin(float a, float b) {
+  inline float 
+  EMin(float a, float b) {
     return (a < b) ? a : b;
   }
 
@@ -130,7 +138,8 @@ namespace EngineUtilities {
    * @param value El valor que se desea redondear.
    * @return El valor redondeado al entero más cercano.
    */
-  inline float round(float value) {
+  inline float 
+  round(float value) {
     return (value > 0) ? static_cast<int>(value + 0.5f) : static_cast<int>(value - 0.5f);
   }
 
@@ -140,7 +149,8 @@ namespace EngineUtilities {
    * @param value El valor que se desea truncar.
    * @return La parte entera del valor dado, redondeada hacia abajo.
    */
-  inline float floor(float value) {
+  inline float 
+  floor(float value) {
     int intValue = static_cast<int>(value);
     return (value < intValue) ? intValue - 1 : intValue;
   }
@@ -151,7 +161,8 @@ namespace EngineUtilities {
    * @param value El valor que se desea redondear hacia arriba.
    * @return El valor redondeado hacia arriba al entero más cercano.
    */
-  inline float ceil(float value) {
+  inline float 
+  ceil(float value) {
     int intValue = static_cast<int>(value);
     return (value > intValue) ? intValue + 1 : intValue;
   }
@@ -161,7 +172,8 @@ namespace EngineUtilities {
    * @param value Valor flotante.
    * @return Valor absoluto del número flotante.
    */
-  inline float fabs(float value) {
+  inline float 
+  fabs(float value) {
     return value < 0.0f ? -value : value;
   }
 
@@ -171,7 +183,8 @@ namespace EngineUtilities {
    * @param angle Ángulo en radianes.
    * @return Valor del seno del ángulo.
    */
-  inline float sin(float angle) {
+  inline float 
+  sin(float angle) {
     float result = 0.0f;
     float term = angle;
     float angle_squared = angle * angle;
@@ -189,7 +202,8 @@ namespace EngineUtilities {
    * @param angle Ángulo en radianes.
    * @return Valor del coseno del ángulo.
    */
-  inline float cos(float angle) {
+  inline float 
+  cos(float angle) {
     return sin(angle + PI / 2);
   }
 
@@ -198,7 +212,8 @@ namespace EngineUtilities {
    * @param angle Ángulo en radianes.
    * @return Valor de la tangente del ángulo.
    */
-  inline float tan(float angle) {
+  inline float 
+  tan(float angle) {
     float s = sin(angle);
     float c = cos(angle);
     return c != 0.0f ? s / c : 0.0f; // Evita la división por cero
@@ -209,7 +224,8 @@ namespace EngineUtilities {
    * @param value Valor en el rango [-1, 1].
    * @return Ángulo en radianes.
    */
-  inline float asin(float value) {
+  inline float 
+  asin(float value) {
     // Aproximación con la serie de Taylor
     float x = value;
     float result = x;
@@ -226,7 +242,8 @@ namespace EngineUtilities {
    * @param value Valor en el rango [-1, 1].
    * @return Ángulo en radianes.
    */
-  inline float acos(float value) {
+  inline float 
+  acos(float value) {
     return PI / 2 - asin(value);
   }
 
@@ -235,7 +252,8 @@ namespace EngineUtilities {
    * @param value Valor.
    * @return Ángulo en radianes.
    */
-  inline float atan(float value) {
+  inline float 
+  atan(float value) {
     // Aproximación de la función arcotangente
     float result = 0.0f;
     float term = value;
@@ -251,7 +269,8 @@ namespace EngineUtilities {
    * @param value Valor.
    * @return Seno hiperbólico.
    */
-  inline float sinh(float value) {
+  inline float 
+  sinh(float value) {
     return (exp(value) - exp(-value)) / 2;
   }
 
@@ -260,7 +279,8 @@ namespace EngineUtilities {
    * @param value Valor.
    * @return Coseno hiperbólico.
    */
-  inline float cosh(float value) {
+  inline float 
+  cosh(float value) {
     return (exp(value) + exp(-value)) / 2;
   }
 
@@ -269,7 +289,8 @@ namespace EngineUtilities {
    * @param value Valor.
    * @return Tangente hiperbólica.
    */
-  inline float tanh(float value) {
+  inline float 
+  tanh(float value) {
     return sinh(value) / cosh(value);
   }
 
@@ -279,7 +300,8 @@ namespace EngineUtilities {
    * @param degrees Ángulo en grados.
    * @return Ángulo en radianes.
    */
-  inline float radians(float degrees) {
+  inline float 
+  radians(float degrees) {
     return degrees * PI / 180.0f;
   }
 
@@ -288,7 +310,8 @@ namespace EngineUtilities {
    * @param radians Ángulo en radianes.
    * @return Ángulo en grados.
    */
-  inline float degrees(float radians) {
+  inline float 
+  degrees(float radians) {
     return radians * 180.0f / PI;
   }
 
@@ -298,7 +321,8 @@ namespace EngineUtilities {
    * @param value Exponente.
    * @return Valor de e^x.
    */
-  inline float exp(float value) {
+  inline float 
+  exp(float value) {
     float result = 1.0f;
     float term = 1.0f;
     for (int n = 1; n < 20; ++n) {
@@ -313,7 +337,8 @@ namespace EngineUtilities {
    * @param value Valor.
    * @return Logaritmo natural.
    */
-  inline float log(float value) {
+  inline float 
+  log(float value) {
     // Aproximación usando la serie de Taylor
     if (value <= 0) return 0;
     float x = (value - 1) / (value + 1);
@@ -332,7 +357,8 @@ namespace EngineUtilities {
    * @param value Valor.
    * @return Logaritmo en base 10.
    */
-  inline float log10(float value) {
+  inline float 
+  log10(float value) {
     return log(value) / log(10);
   }
 
@@ -343,7 +369,8 @@ namespace EngineUtilities {
    * @param b Divisor.
    * @return Módulo.
    */
-  inline float mod(float a, float b) {
+  inline float 
+  mod(float a, float b) {
     return a - b * static_cast<int>(a / b);
   }
 
@@ -353,7 +380,8 @@ namespace EngineUtilities {
    * @param radius Radio del círculo.
    * @return Área del círculo.
    */
-  inline float circleArea(float radius) {
+  inline float 
+  circleArea(float radius) {
     return PI * radius * radius;
   }
 
@@ -362,7 +390,8 @@ namespace EngineUtilities {
    * @param radius Radio del círculo.
    * @return Circunferencia del círculo.
    */
-  inline float circleCircumference(float radius) {
+  inline float 
+  circleCircumference(float radius) {
     return 2 * PI * radius;
   }
 
@@ -372,7 +401,8 @@ namespace EngineUtilities {
    * @param height Alto del rectángulo.
    * @return Área del rectángulo.
    */
-  inline float rectangleArea(float width, float height) {
+  inline float 
+  rectangleArea(float width, float height) {
     return width * height;
   }
 
@@ -382,7 +412,8 @@ namespace EngineUtilities {
    * @param height Alto del rectángulo.
    * @return Perímetro del rectángulo.
    */
-  inline float rectanglePerimeter(float width, float height) {
+  inline float 
+  rectanglePerimeter(float width, float height) {
     return 2 * (width + height);
   }
 
@@ -392,7 +423,8 @@ namespace EngineUtilities {
    * @param height Altura del triángulo.
    * @return Área del triángulo.
    */
-  inline float triangleArea(float base, float height) {
+  inline float 
+  triangleArea(float base, float height) {
     return 0.5f * base * height;
   }
 
@@ -404,7 +436,8 @@ namespace EngineUtilities {
    * @param y2 Coordenada y del segundo punto.
    * @return Distancia entre los dos puntos.
    */
-  inline float distance(float x1, float y1, float x2, float y2) {
+  inline float 
+  distance(float x1, float y1, float x2, float y2) {
     float dx = x2 - x1;
     float dy = y2 - y1;
     return sqrt(dx * dx + dy * dy);
@@ -418,7 +451,8 @@ namespace EngineUtilities {
    * @param t Parámetro de interpolación entre 0 y 1.
    * @return Valor interpolado.
    */
-  inline float lerp(float a, float b, float t) {
+  inline float 
+  lerp(float a, float b, float t) {
     return a + t * (b - a);
   }
 
@@ -427,7 +461,8 @@ namespace EngineUtilities {
    * @param n Número entero no negativo.
    * @return Factorial de n.
    */
-  inline int factorial(int n) {
+  inline int 
+  factorial(int n) {
     int result = 1;
     for (int i = 2; i <= n; ++i) {
       result *= i;
@@ -442,8 +477,8 @@ namespace EngineUtilities {
    * @param epsilon Margen de error.
    * @return Verdadero si los valores son aproximadamente iguales.
    */
-  inline bool approxEqual(float a, float b, float epsilon) {
+  inline bool 
+  approxEqual(float a, float b, float epsilon) {
     return fabs(a - b) < epsilon;
   }
-
 }

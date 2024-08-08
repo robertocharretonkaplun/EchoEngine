@@ -43,7 +43,8 @@ namespace EngineUtilities {
 	 * @tparam ValueType Tipo del segundo valor (valor) del par.
 	 */
 	template <typename KeyType, typename ValueType>
-	class TPair {
+	class 
+	TPair {
 	public:
 		/**
 		 * @brief Constructor por defecto que inicializa el par con valores predeterminados.
@@ -75,7 +76,8 @@ namespace EngineUtilities {
 		 * @return true Si los pares son iguales.
 		 * @return false Si los pares son diferentes.
 		 */
-		bool operator==(const TPair<KeyType, ValueType>& Other) const {
+		bool 
+		operator==(const TPair<KeyType, ValueType>& Other) const {
 			return Key == Other.Key && Value == Other.Value;
 		}
 
@@ -86,7 +88,8 @@ namespace EngineUtilities {
 		 * @return true Si los pares son diferentes.
 		 * @return false Si los pares son iguales.
 		 */
-		bool operator!=(const TPair<KeyType, ValueType>& Other) const {
+		bool 
+		operator!=(const TPair<KeyType, ValueType>& Other) const {
 			return !(*this == Other);
 		}
 
@@ -97,7 +100,8 @@ namespace EngineUtilities {
 		 * @return true Si el par actual es menor que el otro.
 		 * @return false Si el par actual no es menor que el otro.
 		 */
-		bool operator<(const TPair<KeyType, ValueType>& Other) const {
+		bool
+		operator<(const TPair<KeyType, ValueType>& Other) const {
 			return Key < Other.Key || (Key == Other.Key && Value < Other.Value);
 		}
 
@@ -108,7 +112,8 @@ namespace EngineUtilities {
 		 * @return true Si el par actual es mayor que el otro.
 		 * @return false Si el par actual no es mayor que el otro.
 		 */
-		bool operator>(const TPair<KeyType, ValueType>& Other) const {
+		bool 
+		operator>(const TPair<KeyType, ValueType>& Other) const {
 			return Other < *this;
 		}
 
@@ -119,7 +124,8 @@ namespace EngineUtilities {
 		 * @return true Si el par actual es menor o igual al otro.
 		 * @return false Si el par actual no es menor o igual al otro.
 		 */
-		bool operator<=(const TPair<KeyType, ValueType>& Other) const {
+		bool 
+		operator<=(const TPair<KeyType, ValueType>& Other) const {
 			return !(Other < *this);
 		}
 
@@ -130,7 +136,8 @@ namespace EngineUtilities {
 		 * @return true Si el par actual es mayor o igual al otro.
 		 * @return false Si el par actual no es mayor o igual al otro.
 		 */
-		bool operator>=(const TPair<KeyType, ValueType>& Other) const {
+		bool 
+		operator>=(const TPair<KeyType, ValueType>& Other) const {
 			return !(*this < Other);
 		}
 
@@ -139,7 +146,8 @@ namespace EngineUtilities {
 		 *
 		 * Muestra el valor de la clave y del valor en la consola.
 		 */
-		void Print() const {
+		void 
+		Print() const {
 			std::cout << "Key: " << Key << ", Value: " << Value << std::endl;
 		}
 	};

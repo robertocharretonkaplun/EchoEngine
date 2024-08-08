@@ -28,7 +28,8 @@
 */
 #pragma once
 
-namespace EngineUtilities {
+namespace 
+EngineUtilities {
 	/**
 	 * @brief TSet es una clase de conjunto dinámica para almacenar elementos únicos.
 	 *
@@ -39,8 +40,8 @@ namespace EngineUtilities {
 	 * @tparam T El tipo de los elementos almacenados en el conjunto.
 	 */
 	template<typename T>
-	class TSet
-	{
+	class 
+	TSet {
 	private:
 		T* Data;        ///< Puntero a la memoria donde se almacenan los elementos.
 		size_t Capacity;   ///< Capacidad actual del conjunto (número de elementos que puede almacenar).
@@ -51,11 +52,10 @@ namespace EngineUtilities {
 		 *
 		 * @param NewCapacity La nueva capacidad del conjunto.
 		 */
-		void Resize(size_t NewCapacity)
-		{
+		void 
+		Resize(size_t NewCapacity) {
 			T* NewData = new T[NewCapacity];  ///< Crear un nuevo bloque de memoria con la nueva capacidad.
-			for (size_t i = 0; i < Size; ++i)
-			{
+			for (size_t i = 0; i < Size; ++i)	{
 				NewData[i] = Data[i];  ///< Copiar los elementos existentes al nuevo bloque de memoria.
 			}
 			delete[] Data;  ///< Liberar la memoria del conjunto antiguo.
@@ -67,16 +67,12 @@ namespace EngineUtilities {
 		/**
 		 * @brief Constructor por defecto que inicializa el conjunto con capacidad y tamaño cero.
 		 */
-		TSet()
-			: Data(nullptr), Capacity(0), Size(0)
-		{
-		}
+		TSet() : Data(nullptr), Capacity(0), Size(0) {}
 
 		/**
 		 * @brief Destructor que libera la memoria asignada al conjunto.
 		 */
-		~TSet()
-		{
+		~TSet()	{
 			delete[] Data;  ///< Liberar la memoria del conjunto.
 		}
 
@@ -85,14 +81,12 @@ namespace EngineUtilities {
 		 *
 		 * @param Element El elemento a añadir.
 		 */
-		void Add(const T& Element)
-		{
-			if (Contains(Element))
-			{
+		void 
+		Add(const T& Element)	{
+			if (Contains(Element)) {
 				return;  ///< No añadir duplicados.
 			}
-			if (Size == Capacity)
-			{
+			if (Size == Capacity)	{
 				Resize(Capacity == 0 ? 1 : Capacity * 2);  ///< Redimensionar si es necesario.
 			}
 			Data[Size++] = Element;  ///< Añadir el nuevo elemento y aumentar el tamaño.
@@ -103,14 +97,11 @@ namespace EngineUtilities {
 		 *
 		 * @param Element El elemento a eliminar.
 		 */
-		void Remove(const T& Element)
-		{
-			for (size_t i = 0; i < Size; ++i)
-			{
-				if (Data[i] == Element)
-				{
-					for (size_t j = i; j < Size - 1; ++j)
-					{
+		void 
+		Remove(const T& Element) {
+			for (size_t i = 0; i < Size; ++i)	{
+				if (Data[i] == Element)	{
+					for (size_t j = i; j < Size - 1; ++j)	{
 						Data[j] = Data[j + 1];  ///< Desplazar los elementos hacia la izquierda para llenar el hueco.
 					}
 					--Size;  ///< Disminuir el tamaño del conjunto.
@@ -127,12 +118,10 @@ namespace EngineUtilities {
 		 * @return true Si el conjunto contiene el elemento.
 		 * @return false Si el conjunto no contiene el elemento.
 		 */
-		bool Contains(const T& Element) const
-		{
-			for (size_t i = 0; i < Size; ++i)
-			{
-				if (Data[i] == Element)
-				{
+		bool 
+		Contains(const T& Element) const {
+			for (size_t i = 0; i < Size; ++i)	{
+				if (Data[i] == Element)	{
 					return true;  ///< Devolver true si el elemento se encuentra.
 				}
 			}
@@ -144,8 +133,8 @@ namespace EngineUtilities {
 		 *
 		 * @return El número de elementos en el conjunto.
 		 */
-		size_t Num() const
-		{
+		size_t 
+		Num() const {
 			return Size;  ///< Devolver el tamaño actual del conjunto.
 		}
 
@@ -154,8 +143,8 @@ namespace EngineUtilities {
 		 *
 		 * @return La capacidad del conjunto.
 		 */
-		size_t GetCapacity() const
-		{
+		size_t
+		GetCapacity() const {
 			return Capacity;  ///< Devolver la capacidad actual del conjunto.
 		}
 	};

@@ -28,15 +28,17 @@
 */
 #pragma once
 
-#include "Utilities/EngineMath.h"
-namespace EngineUtilities {
+#include "Utilities/Utilities/EngineMath.h"
+namespace 
+EngineUtilities {
   /**
  * @brief A quaternion class.
  *
  * This class represents a quaternion, providing operations such as addition,
  * subtraction, scalar multiplication, normalization, and quaternion multiplication.
  */
-  class Quaternion {
+  class 
+  Quaternion {
   public:
     float w; /**< The real part of the quaternion. */
     float x; /**< The i component of the quaternion. */
@@ -68,7 +70,8 @@ namespace EngineUtilities {
      * @param other The quaternion to add.
      * @return The result of the addition.
      */
-    Quaternion operator+(const Quaternion& other) const {
+    Quaternion 
+    operator+(const Quaternion& other) const {
       return Quaternion(w + other.w, x + other.x, y + other.y, z + other.z);
     }
 
@@ -78,7 +81,8 @@ namespace EngineUtilities {
      * @param other The quaternion to subtract.
      * @return The result of the subtraction.
      */
-    Quaternion operator-(const Quaternion& other) const {
+    Quaternion 
+    operator-(const Quaternion& other) const {
       return Quaternion(w - other.w, x - other.x, y - other.y, z - other.z);
     }
 
@@ -88,7 +92,8 @@ namespace EngineUtilities {
      * @param scalar The scalar to multiply by.
      * @return The result of the multiplication.
      */
-    Quaternion operator*(float scalar) const {
+    Quaternion 
+    operator*(float scalar) const {
       return Quaternion(w * scalar, x * scalar, y * scalar, z * scalar);
     }
 
@@ -98,7 +103,8 @@ namespace EngineUtilities {
      * @param other The quaternion to multiply by.
      * @return The result of the multiplication.
      */
-    Quaternion operator*(const Quaternion& other) const {
+    Quaternion 
+    operator*(const Quaternion& other) const {
       return Quaternion(
         w * other.w - x * other.x - y * other.y - z * other.z,
         w * other.x + x * other.w + y * other.z - z * other.y,
@@ -112,7 +118,8 @@ namespace EngineUtilities {
      *
      * @return The magnitude of the quaternion.
      */
-    float magnitude() const {
+    float 
+    magnitude() const {
       return EngineUtilities::sqrt(w * w + x * x + y * y + z * z);
     }
 
@@ -121,7 +128,8 @@ namespace EngineUtilities {
      *
      * @return The normalized quaternion.
      */
-    Quaternion normalize() const {
+    Quaternion 
+    normalize() const {
       float mag = magnitude();
       if (mag == 0) {
         return Quaternion(1, 0, 0, 0);

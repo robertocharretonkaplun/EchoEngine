@@ -27,14 +27,16 @@
  * SOFTWARE.
 */
 #pragma once
-namespace EngineUtilities {
+namespace 
+EngineUtilities {
   /**
  * @brief A 4x4 matrix class.
  *
  * This class represents a 4x4 matrix and provides basic matrix operations such as
  * addition, subtraction, multiplication, determinant calculation, and inversion.
  */
-  class Matrix4x4 {
+  class 
+  Matrix4x4 {
   public:
     float m[4][4]; /**< The elements of the matrix. */
 
@@ -107,7 +109,8 @@ namespace EngineUtilities {
      * @param other The matrix to add.
      * @return The result of the addition.
      */
-    Matrix4x4 operator+(const Matrix4x4& other) const {
+    Matrix4x4 
+    operator+(const Matrix4x4& other) const {
       return Matrix4x4(
         m[0][0] + other.m[0][0], m[0][1] + other.m[0][1], m[0][2] + other.m[0][2], m[0][3] + other.m[0][3],
         m[1][0] + other.m[1][0], m[1][1] + other.m[1][1], m[1][2] + other.m[1][2], m[1][3] + other.m[1][3],
@@ -122,7 +125,8 @@ namespace EngineUtilities {
      * @param other The matrix to subtract.
      * @return The result of the subtraction.
      */
-    Matrix4x4 operator-(const Matrix4x4& other) const {
+    Matrix4x4 
+    operator-(const Matrix4x4& other) const {
       return Matrix4x4(
         m[0][0] - other.m[0][0], m[0][1] - other.m[0][1], m[0][2] - other.m[0][2], m[0][3] - other.m[0][3],
         m[1][0] - other.m[1][0], m[1][1] - other.m[1][1], m[1][2] - other.m[1][2], m[1][3] - other.m[1][3],
@@ -137,7 +141,8 @@ namespace EngineUtilities {
      * @param other The matrix to multiply by.
      * @return The result of the multiplication.
      */
-    Matrix4x4 operator*(const Matrix4x4& other) const {
+    Matrix4x4 
+    operator*(const Matrix4x4& other) const {
       return Matrix4x4(
         m[0][0] * other.m[0][0] + m[0][1] * other.m[1][0] + m[0][2] * other.m[2][0] + m[0][3] * other.m[3][0],
         m[0][0] * other.m[0][1] + m[0][1] * other.m[1][1] + m[0][2] * other.m[2][1] + m[0][3] * other.m[3][1],
@@ -166,7 +171,8 @@ namespace EngineUtilities {
      *
      * @return The determinant of the matrix.
      */
-    float determinant() const {
+    float 
+    determinant() const {
       return
         m[0][0] * (
           m[1][1] * (m[2][2] * m[3][3] - m[2][3] * m[3][2]) -
@@ -246,7 +252,5 @@ namespace EngineUtilities {
     //      m[0][3] * (m[1][0] * m[2][1] - m[1][1] * m[2][0])) * invDet
     //  );
     //}
-
-
   };
 }

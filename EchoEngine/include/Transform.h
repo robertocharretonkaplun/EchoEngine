@@ -33,7 +33,8 @@
 #include "Component.h"
 
 // Clase que maneja las transformaciones de un objeto en el espacio 3D
-class Transform : public Component {
+class 
+Transform : public Component {
 public:
   // Constructor que inicializa posición, rotación y escala por defecto
   Transform() : position(), rotation(), scale(), matrix(), Component(ComponentType::TRANSFORM) {}

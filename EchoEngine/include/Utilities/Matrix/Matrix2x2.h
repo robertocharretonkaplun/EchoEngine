@@ -27,14 +27,16 @@
  * SOFTWARE.
 */
 #pragma once
-namespace EngineUtilities {
+namespace 
+EngineUtilities {
   /**
  * @brief A 2x2 matrix class.
  *
  * This class represents a 2x2 matrix and provides basic matrix operations such as
  * addition, subtraction, multiplication, determinant calculation, and inversion.
  */
-  class Matrix2x2 {
+  class 
+  Matrix2x2 {
   public:
     float m[2][2]; /**< The elements of the matrix. */
 
@@ -69,7 +71,8 @@ namespace EngineUtilities {
      * @param other The matrix to add.
      * @return The result of the addition.
      */
-    Matrix2x2 operator+(const Matrix2x2& other) const {
+    Matrix2x2 
+    operator+(const Matrix2x2& other) const {
       return Matrix2x2(
         m[0][0] + other.m[0][0], m[0][1] + other.m[0][1],
         m[1][0] + other.m[1][0], m[1][1] + other.m[1][1]
@@ -82,7 +85,8 @@ namespace EngineUtilities {
      * @param other The matrix to subtract.
      * @return The result of the subtraction.
      */
-    Matrix2x2 operator-(const Matrix2x2& other) const {
+    Matrix2x2 
+    operator-(const Matrix2x2& other) const {
       return Matrix2x2(
         m[0][0] - other.m[0][0], m[0][1] - other.m[0][1],
         m[1][0] - other.m[1][0], m[1][1] - other.m[1][1]
@@ -95,7 +99,8 @@ namespace EngineUtilities {
      * @param other The matrix to multiply by.
      * @return The result of the multiplication.
      */
-    Matrix2x2 operator*(const Matrix2x2& other) const {
+    Matrix2x2
+    operator*(const Matrix2x2& other) const {
       return Matrix2x2(
         m[0][0] * other.m[0][0] + m[0][1] * other.m[1][0], m[0][0] * other.m[0][1] + m[0][1] * other.m[1][1],
         m[1][0] * other.m[0][0] + m[1][1] * other.m[1][0], m[1][0] * other.m[0][1] + m[1][1] * other.m[1][1]
@@ -108,7 +113,8 @@ namespace EngineUtilities {
      * @param scalar The scalar to multiply by.
      * @return The result of the multiplication.
      */
-    Matrix2x2 operator*(float scalar) const {
+    Matrix2x2 
+    operator*(float scalar) const {
       return Matrix2x2(
         m[0][0] * scalar, m[0][1] * scalar,
         m[1][0] * scalar, m[1][1] * scalar
@@ -120,7 +126,8 @@ namespace EngineUtilities {
      *
      * @return The determinant of the matrix.
      */
-    float determinant() const {
+    float 
+    determinant() const {
       return m[0][0] * m[1][1] - m[0][1] * m[1][0];
     }
 
@@ -129,7 +136,8 @@ namespace EngineUtilities {
      *
      * @return The inverse of the matrix.
      */
-    Matrix2x2 inverse() const {
+    Matrix2x2 
+    inverse() const {
       float det = determinant();
       if (det == 0) {
         // Handle non-invertible matrix gracefully.
