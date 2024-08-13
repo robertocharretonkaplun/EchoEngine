@@ -44,6 +44,16 @@ Viewport::init(Window window) {
 	m_viewport.TopLeftY = 0;
 }
 
+void
+Viewport::init(unsigned int width, unsigned int height) {
+	m_viewport.Width = static_cast<float>(width);
+	m_viewport.Height = static_cast<float>(height);
+	m_viewport.MinDepth = 0.0f;
+	m_viewport.MaxDepth = 1.0f;
+	m_viewport.TopLeftX = 0;
+	m_viewport.TopLeftY = 0;
+}
+
 void 
 Viewport::update() {
 }

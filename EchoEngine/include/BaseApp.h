@@ -67,6 +67,9 @@ public:
 
 	void 
 	CreateGrid(int width, int depth, float spacing);
+
+	void 
+	OnResize(unsigned int width, unsigned int height);
 private:
 	Window															m_window;
 	EETimer															m_timer;

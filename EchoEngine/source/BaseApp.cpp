@@ -416,3 +416,51 @@ BaseApp::CreateGrid(int width, int depth, float spacing) {
 	MC.m_numVertex = MC.m_vertex.size();
 	MC.m_numIndex = MC.m_index.size();
 }
+
+void 
+BaseApp::OnResize(unsigned int width, unsigned int height) {
+	if (m_swapchain.m_swapChain) {
+		// Actualiza el tamaño de la ventana
+		m_window.m_width = width;
+		m_window.m_height = height;
+
+		// Reconfigura la cadena de intercambio
+		HRESULT hr;
+		m_swapchain.init(m_device, m_deviceContext, m_backBuffer, m_window);
+		
+		// Obtén el back buffer
+		hr = m_swapchain.m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&m_backBuffer.m_texture);
+		if (FAILED(hr)) {
+			// Manejar el error
+		}
+
+		// Inicializa la vista de renderizado
+		m_renderTargetView.init(m_device, m_backBuffer, DXGI_FORMAT_R8G8B8A8_UNORM);
+		m_backBuffer.destroy();
+
+		// Configura el viewport
+		m_viewport.init(width, height);
+
+		// Inicializa los buffers constantes
+		m_CBBufferNeverChanges.init(m_device, sizeof(CBNeverChanges));
+		m_CBBufferChangeOnResize.init(m_device, sizeof(CBChangeOnResize));
+
+		// Inicialización de la matriz de vista
+		XMVECTOR Eye = XMVectorSet(0.0f, 3.0f, -6.0f, 0.0f);
+		XMVECTOR At = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		m_View = XMMatrixLookAtLH(Eye, At, Up);
+
+		cbNeverChanges.mView = XMMatrixTranspose(m_View);
+
+		// Inicialización de la matriz de proyección
+		m_Projection = XMMatrixPerspectiveFovLH(XM_PIDIV4, width / (FLOAT)height, 0.001f, 100.0f);
+		cbChangesOnResize.mProjection = XMMatrixTranspose(m_Projection);
+
+		// Actualiza los buffers constantes
+		m_viewport.render(m_deviceContext);
+		m_CBBufferNeverChanges.update(m_deviceContext, 0, nullptr, &cbNeverChanges, 0, 0);
+		m_CBBufferChangeOnResize.update(m_deviceContext, 0, nullptr, &cbChangesOnResize, 0, 0);
+	}
+}
+

@@ -34,9 +34,9 @@
 
 void
 SwapChain::init(Device& device,
-	DeviceContext& deviceContext,
-	Texture& backBuffer,
-	Window window) {
+								DeviceContext& deviceContext,
+								Texture& backBuffer,
+								Window window) {
 	// Check if window resource exists
 	if (window.m_hWnd == nullptr) {
 		ERROR("SwapChain", "init", "CHECK FOR Window window")

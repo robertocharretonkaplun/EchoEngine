@@ -27,6 +27,7 @@
  * SOFTWARE.
 */
 #include "BaseApp.h"
+	BaseApp app;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -43,6 +44,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		EndPaint(hWnd, &ps);
 		break;
 
+	case WM_SIZE:
+		if (wParam != SIZE_MINIMIZED)
+		{
+			// Redimensiona el back buffer y la vista de proyección
+			app.OnResize(LOWORD(lParam), HIWORD(lParam));
+		}
+		break;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -51,12 +60,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 
+
 	return 0;
 }
 
 // Entry point to the program.
 int WINAPI
 wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) {
-	BaseApp app;
 	return app.run(hInstance, hPrevInstance, lpCmdLine, nCmdShow, WndProc);
 }

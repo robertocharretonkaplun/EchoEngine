@@ -39,6 +39,9 @@ public:
 
 	void
   init(Window window);
+  
+  void
+  init(unsigned int width, unsigned int height);
 
   void 
   update();
