@@ -62,7 +62,9 @@ public:
        unsigned int width, 
        unsigned int height, 
        DXGI_FORMAT Format, 
-       unsigned int BindFlags);
+       unsigned int BindFlags,
+       unsigned int sampleCount = 1,
+       unsigned int qualityLevels = 0);
 
   /// <summary>
   /// Brief: This method is in charge of updating the logic of the texture

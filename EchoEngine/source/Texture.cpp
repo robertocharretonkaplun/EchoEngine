@@ -112,7 +112,9 @@ Texture::init(Device device,
 							unsigned int width, 
 							unsigned int height, 
 							DXGI_FORMAT Format, 
-							unsigned int BindFlags) {
+							unsigned int BindFlags, 
+							unsigned int sampleCount,
+							unsigned int qualityLevels) {
 	if (device.m_device == nullptr) {
 		ERROR("Texture", "init", "CHECK FOR Device device on texture loading method")
 		exit(1);
@@ -130,8 +132,8 @@ Texture::init(Device device,
 	desc.MipLevels = 1;
 	desc.ArraySize = 1;
 	desc.Format = Format;
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
+	desc.SampleDesc.Count = sampleCount;
+	desc.SampleDesc.Quality = qualityLevels;
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = BindFlags;
 	desc.CPUAccessFlags = 0;

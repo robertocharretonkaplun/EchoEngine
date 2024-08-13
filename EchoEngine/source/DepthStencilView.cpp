@@ -46,7 +46,7 @@ DepthStencilView::init(Device& device, Texture& depthStencil, DXGI_FORMAT format
 	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
 	memset(&descDSV, 0, sizeof(descDSV));
 	descDSV.Format = format;
-	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
 	descDSV.Texture2D.MipSlice = 0;
 
 	device.CreateDepthStencilView(depthStencil.m_texture, &descDSV, &m_depthStencilView);

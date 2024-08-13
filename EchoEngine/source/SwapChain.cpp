@@ -32,15 +32,15 @@
 #include "Window.h"
 #include "Texture.h"	
 
-void 
-SwapChain::init(Device& device, 
-								DeviceContext& deviceContext, 
-								Texture& backBuffer, 
-								Window window) {
-	// Check if window resouce exist
+void
+SwapChain::init(Device& device,
+	DeviceContext& deviceContext,
+	Texture& backBuffer,
+	Window window) {
+	// Check if window resource exists
 	if (window.m_hWnd == nullptr) {
 		ERROR("SwapChain", "init", "CHECK FOR Window window")
-		exit(1);
+			exit(1);
 	}
 
 	unsigned int createDeviceFlags = 0;
@@ -64,6 +64,41 @@ SwapChain::init(Device& device,
 	};
 	unsigned int numFeatureLevels = ARRAYSIZE(featureLevels);
 
+	HRESULT hr = S_OK;
+
+	// Create device and device context (no swap chain yet)
+	for (unsigned int driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
+	{
+		m_driverType = driverTypes[driverTypeIndex];
+		hr = D3D11CreateDevice(nullptr,
+			m_driverType,
+			nullptr,
+			createDeviceFlags,
+			featureLevels,
+			numFeatureLevels,
+			D3D11_SDK_VERSION,
+			&device.m_device,
+			&m_featureLevel,
+			&deviceContext.m_deviceContext);
+		if (SUCCEEDED(hr)) {
+			break;
+		}
+	}
+	if (FAILED(hr)) {
+		ERROR("SwapChain", "init", "CHECK FOR D3D11CreateDevice()")
+			exit(1);
+	}
+	m_sampleCount = 4;
+	m_qualityLevels = 0;
+
+	// Check if MSAA is supported
+	hr = device.m_device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, m_sampleCount, &m_qualityLevels);
+	if (FAILED(hr) || m_qualityLevels == 0) {
+		ERROR("SwapChain", "init", "MSAA not supported or invalid quality level");
+		exit(1);
+	}
+
+	// Setup swap chain description
 	DXGI_SWAP_CHAIN_DESC sd;
 	memset(&sd, 0, sizeof(sd));
 	sd.BufferCount = 1;
@@ -74,44 +109,43 @@ SwapChain::init(Device& device,
 	sd.BufferDesc.RefreshRate.Denominator = 1;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.OutputWindow = window.m_hWnd;
-	sd.SampleDesc.Count = 1;
-	sd.SampleDesc.Quality = 0;
 	sd.Windowed = TRUE;
+	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
-	HRESULT hr = S_OK;
+	// Set MSAA options in swap chain descriptor
+	sd.SampleDesc.Count = m_sampleCount;
+	sd.SampleDesc.Quality = m_qualityLevels - 1;  // Use maximum quality
 
-	for (unsigned int driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
-	{
-		m_driverType = driverTypes[driverTypeIndex];
-		hr = D3D11CreateDeviceAndSwapChain(nullptr, 
-																			 m_driverType, 
-																			 nullptr, 
-																			 createDeviceFlags, 
-																			 featureLevels, 
-																			 numFeatureLevels,
-																			 D3D11_SDK_VERSION, 
-																			 &sd, 
-																			 &m_swapChain, 
-																			 &device.m_device, 
-																			 &m_featureLevel, 
-																			 &deviceContext.m_deviceContext);
-		if (SUCCEEDED(hr)) {
-			break;
-		}
+	// Create the swap chain
+	hr = device.m_device->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(&m_dxgiDevice));
+	if (FAILED(hr)) {
+		ERROR("SwapChain", "init", "CHECK FOR QueryInterface IDXGIDevice")
+			exit(1);
 	}
-	if (FAILED(hr))	{
-		ERROR("SwapChain", "init", "CHECK FOR D3D11CreateDeviceAndSwapChain()")
-		exit(1);
+	hr = m_dxgiDevice->GetAdapter(&m_dxgiAdapter);
+	if (FAILED(hr)) {
+		ERROR("SwapChain", "init", "CHECK FOR GetAdapter IDXGIAdapter")
+			exit(1);
+	}
+	hr = m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), reinterpret_cast<void**>(&m_dxgiFactory));
+	if (FAILED(hr)) {
+		ERROR("SwapChain", "init", "CHECK FOR GetParent IDXGIFactory")
+			exit(1);
+	}
+	hr = m_dxgiFactory->CreateSwapChain(device.m_device, &sd, &m_swapChain);
+	if (FAILED(hr)) {
+		ERROR("SwapChain", "init", "CHECK FOR CreateSwapChain")
+			exit(1);
 	}
 
 	// Create a render target view
 	hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer.m_texture);
-	
 	if (FAILED(hr)) {
 		ERROR("SwapChain", "init", "CHECK FOR m_swapChain->GetBuffer()")
 			exit(1);
 	}
 }
+
 
 void 
 SwapChain::update() {

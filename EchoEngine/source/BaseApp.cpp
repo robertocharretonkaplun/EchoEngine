@@ -45,7 +45,9 @@ BaseApp::init() {
 		m_window.m_width,
 		m_window.m_height,
 		DXGI_FORMAT_D24_UNORM_S8_UINT,
-		D3D11_BIND_DEPTH_STENCIL);
+		D3D11_BIND_DEPTH_STENCIL,
+		4,
+		0);
 
 	// Create the depth stencil view
 	m_depthStencilView.init(m_device,
