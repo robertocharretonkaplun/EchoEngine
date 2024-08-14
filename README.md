@@ -1,5 +1,7 @@
 # EchoEngine
+
 =====
+
 <sub>(This library is available under a free and permissive license, but needs financial support to sustain its continued improvements. In addition to maintenance and stability there are many desirable features yet to be added. If your company is using Echo Engine, please consider reaching out.)</sub>
 
 Businesses: support continued development and maintenance via invoiced sponsoring/support contracts:
