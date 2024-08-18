@@ -161,7 +161,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>WIN32;FBXSDK_SHARED;_DEBUG;DEBUG;PROFILE;_WINDOWS;D3DXFX_LARGEADDRESS_HANDLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -205,7 +205,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>WIN32;FBXSDK_SHARED;_DEBUG;DEBUG;PROFILE;_WINDOWS;D3DXFX_LARGEADDRESS_HANDLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -250,7 +250,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>WIN32;FBXSDK_SHARED;NDEBUG;_WINDOWS;D3DXFX_LARGEADDRESS_HANDLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -295,7 +295,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>WIN32;FBXSDK_SHARED;NDEBUG;_WINDOWS;D3DXFX_LARGEADDRESS_HANDLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -341,7 +341,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>WIN32;FBXSDK_SHARED;NDEBUG;PROFILE;_WINDOWS;D3DXFX_LARGEADDRESS_HANDLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -386,7 +386,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\JetrayEngine\JetrayEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./include/;DXUT\Core;DXUT\Optional;./include/fbx/;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking\backends;C:\Users\rchar\OneDrive\Documentos\GitHub\EchoEngine\EchoEngine\Imgui\imgui-docking-znly-docking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>WIN32;FBXSDK_SHARED;NDEBUG;PROFILE;_WINDOWS;D3DXFX_LARGEADDRESS_HANDLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
