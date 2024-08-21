@@ -440,6 +440,7 @@
     <ClCompile Include="source\DeviceContext.cpp" />
     <ClCompile Include="source\EETimer.cpp" />
     <ClCompile Include="source\ModelLoader.cpp" />
+    <ClCompile Include="source\Rasterizer.cpp" />
     <ClCompile Include="source\RenderTargetView.cpp" />
     <ClCompile Include="source\SamplerState.cpp" />
     <ClCompile Include="source\Screenshot.cpp" />
@@ -489,6 +490,7 @@
     <ClInclude Include="include\MeshComponent.h" />
     <ClInclude Include="include\ModelLoader.h" />
     <ClInclude Include="include\PreRequisites.h" />
+    <ClInclude Include="include\Rasterizer.h" />
     <ClInclude Include="include\RenderTargetView.h" />
     <ClInclude Include="include\Resource.h" />
     <ClInclude Include="include\SamplerState.h" />

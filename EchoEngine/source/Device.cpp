@@ -221,3 +221,24 @@ Device::CreateSamplerState(const D3D11_SAMPLER_DESC* pSamplerDesc,
 
 	return hr;
 }
+
+HRESULT 
+Device::CreateRasterizerState(const D3D11_RASTERIZER_DESC* pRasterizerDesc, 
+															ID3D11RasterizerState** ppRasterizerState) {
+	HRESULT hr = S_OK;
+
+	if (pRasterizerDesc == nullptr) {
+		ERROR("Device", "CreateRasterizerState", "CHECK FOR const D3D11_RASTERIZER_DESC* pRasterizerDesc")
+			exit(1);
+	}
+	else if (ppRasterizerState == nullptr) {
+		ERROR("Device", "CreateRasterizerState", "CHECK FOR ID3D11RasterizerState** ppRasterizerState")
+			exit(1);
+	}
+	else {
+		hr = m_device->CreateRasterizerState(pRasterizerDesc, ppRasterizerState);
+		MESSAGE("Device", "CreateRasterizerState", "OK")
+	}
+
+	return hr;
+}

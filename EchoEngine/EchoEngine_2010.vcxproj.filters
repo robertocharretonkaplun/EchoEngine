@@ -200,6 +200,9 @@
     <ClInclude Include="include\Utilities\Memory\TWeakPointer.h">
       <Filter>Include\Utilities\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="include\Rasterizer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EchoEngine.cpp" />
@@ -279,6 +282,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="source\EETimer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Rasterizer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -38,9 +38,10 @@ Actor::Actor(Device device) {
 
 	m_modelBuffer.init(device, sizeof(CBChangesEveryFrame));
 	m_sampler.init(device);
+	m_rasterizer.init(device);
 }
 
-void 
+void
 Actor::update(float deltaTime, DeviceContext deviceContext) {
 
 	getComponent<Transform>()->update(deltaTime);
@@ -51,8 +52,12 @@ Actor::update(float deltaTime, DeviceContext deviceContext) {
 
 }
 
-void 
+void
 Actor::render(DeviceContext deviceContext) {
+	// Configurar Rasterizador y Sampler solo una vez si no cambian entre mallas
+	m_rasterizer.render(deviceContext);
+	m_sampler.render(deviceContext, 0, 1);
+
 	for (unsigned int i = 0; i < m_meshes.size(); i++) {
 		m_vertexBuffers[i].render(deviceContext, 0, 1);
 		m_indexBuffers[i].render(deviceContext, DXGI_FORMAT_R32_UINT);
@@ -66,15 +71,14 @@ Actor::render(DeviceContext deviceContext) {
 				//m_default.render(deviceContext, 0, 1);
 			}
 		}
-		m_sampler.render(deviceContext, 0, 1);
 		m_modelBuffer.renderModel(deviceContext, 2, 1);
-		
+
 		deviceContext.m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		deviceContext.m_deviceContext->DrawIndexed(m_meshes[i].m_numIndex, 0, 0);
 	}
 }
 
-void 
+void
 Actor::destroy() {
 
 	for (auto& vertexBuffer : m_vertexBuffers) {
@@ -90,10 +94,11 @@ Actor::destroy() {
 	}
 	m_modelBuffer.destroy();
 
+	m_rasterizer.destroy();
 	m_sampler.destroy();
 }
 
-void 
+void
 Actor::setMesh(Device device, std::vector<MeshComponent> meshes) {
 	m_meshes = meshes;
 

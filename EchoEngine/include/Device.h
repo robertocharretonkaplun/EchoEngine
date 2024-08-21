@@ -100,6 +100,10 @@ public:
 	HRESULT
 	CreateSamplerState(const D3D11_SAMPLER_DESC* pSamplerDesc,
 										 ID3D11SamplerState** ppSamplerState);
+
+	HRESULT
+	CreateRasterizerState(const D3D11_RASTERIZER_DESC* pRasterizerDesc, 
+												ID3D11RasterizerState** ppRasterizerState);
 public:
 	ID3D11Device* m_device = nullptr;
 };

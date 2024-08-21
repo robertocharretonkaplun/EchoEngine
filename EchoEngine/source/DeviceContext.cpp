@@ -141,3 +141,13 @@ DeviceContext::PSSetSamplers(unsigned int StartSlot,
 		m_deviceContext->PSSetSamplers(StartSlot, NumSamplers, ppSamplers);
 	}
 }
+
+void 
+DeviceContext::RSSetState(ID3D11RasterizerState* pRasterizerState) {
+	if (pRasterizerState == nullptr) {
+		ERROR("DeviceContext", "RSSetState", "CHECK FOR ID3D11RasterizerState* pRasterizerState");
+	}
+	else {
+		m_deviceContext->RSSetState(pRasterizerState);
+	}
+}

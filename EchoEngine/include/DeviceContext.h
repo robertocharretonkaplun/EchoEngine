@@ -91,6 +91,10 @@ public:
   PSSetSamplers(unsigned int StartSlot,
                 unsigned int NumSamplers,
                 ID3D11SamplerState* const* ppSamplers);
+	
+	void 
+	RSSetState(ID3D11RasterizerState* pRasterizerState);
+
 private:
 
 public:
