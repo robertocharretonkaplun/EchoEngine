@@ -39,6 +39,7 @@ Actor::Actor(Device device) {
 	m_modelBuffer.init(device, sizeof(CBChangesEveryFrame));
 	m_sampler.init(device);
 	m_rasterizer.init(device);
+	m_blendstate.init(device);
 }
 
 void
@@ -54,9 +55,10 @@ Actor::update(float deltaTime, DeviceContext deviceContext) {
 
 void
 Actor::render(DeviceContext deviceContext) {
-	// Configurar Rasterizador y Sampler solo una vez si no cambian entre mallas
+	// Configurar Rasterizador, Sampler y BlendState solo una vez si no cambian entre mallas
 	m_rasterizer.render(deviceContext);
 	m_sampler.render(deviceContext, 0, 1);
+	m_blendstate.render(deviceContext);
 
 	for (unsigned int i = 0; i < m_meshes.size(); i++) {
 		m_vertexBuffers[i].render(deviceContext, 0, 1);
@@ -95,6 +97,7 @@ Actor::destroy() {
 	m_modelBuffer.destroy();
 
 	m_rasterizer.destroy();
+	m_blendstate.destroy();
 	m_sampler.destroy();
 }
 

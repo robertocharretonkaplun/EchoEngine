@@ -434,6 +434,7 @@
     <ClCompile Include="include\InputLayout.cpp" />
     <ClCompile Include="source\Actor.cpp" />
     <ClCompile Include="source\BaseApp.cpp" />
+    <ClCompile Include="source\BlendState.cpp" />
     <ClCompile Include="source\Buffer.cpp" />
     <ClCompile Include="source\DepthStencilView.cpp" />
     <ClCompile Include="source\Device.cpp" />
@@ -479,6 +480,7 @@
     <ClInclude Include="Imgui\imgui-docking-znly-docking\imstb_truetype.h" />
     <ClInclude Include="include\Actor.h" />
     <ClInclude Include="include\BaseApp.h" />
+    <ClInclude Include="include\BlendState.h" />
     <ClInclude Include="include\Buffer.h" />
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\DepthStencilView.h" />

@@ -187,11 +187,9 @@ Device::CreateBuffer(const D3D11_BUFFER_DESC* pDesc,
 
 	if (pDesc == nullptr) {
 		ERROR("Device", "CreateBuffer", "CHECK FOR const D3D11_BUFFER_DESC* pDesc")
-		exit(1);
 	}
 	else if (ppBuffer == nullptr) {
 		ERROR("Device", "CreateBuffer", "CHECK FOR ID3D11Buffer** ppBuffer")
-		exit(1);
 	}
 	else {
 		hr = m_device->CreateBuffer(pDesc, pInitialData, ppBuffer);
@@ -208,11 +206,9 @@ Device::CreateSamplerState(const D3D11_SAMPLER_DESC* pSamplerDesc,
 
 	if (pSamplerDesc == nullptr) {
 		ERROR("Device", "CreateSamplerState", "CHECK FOR const D3D11_SAMPLER_DESC* pSamplerDesc")
-		exit(1);
 	}
 	else if (ppSamplerState == nullptr) {
 		ERROR("Device", "CreateSamplerState", "CHECK FOR ID3D11SamplerState** ppSamplerState")
-		exit(1);
 	}
 	else {
 		hr = m_device->CreateSamplerState(pSamplerDesc, ppSamplerState);
@@ -229,15 +225,32 @@ Device::CreateRasterizerState(const D3D11_RASTERIZER_DESC* pRasterizerDesc,
 
 	if (pRasterizerDesc == nullptr) {
 		ERROR("Device", "CreateRasterizerState", "CHECK FOR const D3D11_RASTERIZER_DESC* pRasterizerDesc")
-			exit(1);
 	}
 	else if (ppRasterizerState == nullptr) {
 		ERROR("Device", "CreateRasterizerState", "CHECK FOR ID3D11RasterizerState** ppRasterizerState")
-			exit(1);
 	}
 	else {
 		hr = m_device->CreateRasterizerState(pRasterizerDesc, ppRasterizerState);
 		MESSAGE("Device", "CreateRasterizerState", "OK")
+	}
+
+	return hr;
+}
+
+HRESULT 
+Device::CreateBlendState(const D3D11_BLEND_DESC* pBlendStateDesc, 
+												 ID3D11BlendState** ppBlendState) {
+	HRESULT hr = S_OK;
+
+	if (pBlendStateDesc == nullptr) {
+		ERROR("Device", "CreateRasterizerState", "CHECK FOR const D3D11_BLEND_DESC* pBlendStateDesc")
+	}
+	else if (ppBlendState == nullptr) {
+		ERROR("Device", "CreateRasterizerState", "CHECK FOR ID3D11BlendState** ppBlendState")
+	}
+	else {
+		hr = m_device->CreateBlendState(pBlendStateDesc, ppBlendState);
+		MESSAGE("Device", "CreateBlendState", "OK")
 	}
 
 	return hr;

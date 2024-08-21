@@ -95,6 +95,10 @@ public:
 	void 
 	RSSetState(ID3D11RasterizerState* pRasterizerState);
 
+	void 
+	OMSetBlendState(ID3D11BlendState* pBlendState,
+									const float BlendFactor[4],
+									unsigned int SampleMask);
 private:
 
 public:

@@ -34,6 +34,7 @@
 #include "SamplerState.h"
 #include "Transform.h"
 #include "Rasterizer.h"
+#include "BlendState.h"
 
 class Device;
 class MeshComponent;
@@ -120,6 +121,7 @@ private:
   std::vector<MeshComponent> m_meshes; ///< Vector de componentes de malla.
   std::vector<Texture> m_textures; ///< Vector de texturas.
 
+  BlendState m_blendstate;
   Rasterizer m_rasterizer;
   SamplerState m_sampler; ///< Estado del muestreador.
   std::vector<Buffer> m_vertexBuffers; ///< Buffers de vértices.

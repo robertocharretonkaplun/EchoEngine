@@ -203,6 +203,9 @@
     <ClInclude Include="include\Rasterizer.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="include\BlendState.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EchoEngine.cpp" />
@@ -285,6 +288,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="source\Rasterizer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BlendState.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

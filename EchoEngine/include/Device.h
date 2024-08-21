@@ -104,6 +104,10 @@ public:
 	HRESULT
 	CreateRasterizerState(const D3D11_RASTERIZER_DESC* pRasterizerDesc, 
 												ID3D11RasterizerState** ppRasterizerState);
+
+	HRESULT 
+	CreateBlendState(const D3D11_BLEND_DESC *pBlendStateDesc,
+									 ID3D11BlendState **ppBlendState);
 public:
 	ID3D11Device* m_device = nullptr;
 };

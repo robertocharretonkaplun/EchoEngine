@@ -151,3 +151,15 @@ DeviceContext::RSSetState(ID3D11RasterizerState* pRasterizerState) {
 		m_deviceContext->RSSetState(pRasterizerState);
 	}
 }
+
+void 
+DeviceContext::OMSetBlendState(ID3D11BlendState* pBlendState, 
+															const float BlendFactor[4],
+															unsigned int SampleMask) {
+	if (pBlendState == nullptr) {
+		ERROR("DeviceContext", "RSSetState", "CHECK FOR ID3D11BlendState* pBlendState");
+	}
+	else {
+		m_deviceContext->OMSetBlendState(pBlendState, BlendFactor, SampleMask);
+	}
+}
