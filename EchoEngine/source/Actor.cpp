@@ -57,8 +57,8 @@ void
 Actor::render(DeviceContext deviceContext) {
 	// Configurar Rasterizador, Sampler y BlendState solo una vez si no cambian entre mallas
 	m_rasterizer.render(deviceContext);
-	m_sampler.render(deviceContext, 0, 1);
 	m_blendstate.render(deviceContext);
+	m_sampler.render(deviceContext, 0, 1);
 
 	for (unsigned int i = 0; i < m_meshes.size(); i++) {
 		m_vertexBuffers[i].render(deviceContext, 0, 1);
